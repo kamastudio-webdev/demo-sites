@@ -1,0 +1,46 @@
+---
+import Base from '../layouts/Base.astro';
+import BarberList from '../components/BarberList.astro';
+---
+
+<Base
+  title="Our Barbers | Sixpenny Barber Shop, Denver"
+  description="Meet the three barbers at Sixpenny Barber Shop in Capitol Hill, Denver, open since 2011."
+>
+  <section class="wrap page-head">
+    <h1>Three chairs, three barbers</h1>
+    <p class="lede">
+      Theo Vance opened Sixpenny in 2011 in an old shoe repair shop on Brasswick Street. The
+      chairs came from a shop in Pueblo that closed after sixty years.
+    </p>
+  </section>
+
+  <section class="band band--white">
+    <div class="wrap">
+      <BarberList />
+    </div>
+  </section>
+
+  <div class="tiles" aria-hidden="true"></div>
+
+  <section class="band">
+    <div class="wrap split">
+      <h2>Why it's called Sixpenny</h2>
+      <div>
+        <p class="lede">
+          Theo's grandfather cut hair in Manchester, England, and charged sixpence for a short back
+          and sides. The coin he kept from his first day sits in a frame by the register.
+        </p>
+        <p>
+          The shop works the way his did. You get the same barber if you want one, a real
+          conversation if you want one, and quiet if you don't. Nobody tries to sell you a bottle
+          of anything.
+        </p>
+        <p>
+          The game is usually on, the coffee is free, and there's a stack of comics for kids who
+          need distracting.
+        </p>
+      </div>
+    </div>
+  </section>
+</Base>

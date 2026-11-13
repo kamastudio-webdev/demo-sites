@@ -1,0 +1,73 @@
+---
+// The four things that happen on every mowing visit, with small line drawings.
+const items = [
+  {
+    title: 'Mowed',
+    text: 'In straight, even stripes at the right height for your grass.',
+    icon: 'M6 30h30M10 30l4-14h14l4 14M14 16l-3-8M30 23a3 3 0 1 0 6 0 3 3 0 1 0-6 0M8 23a3 3 0 1 0 6 0 3 3 0 1 0-6 0',
+  },
+  {
+    title: 'Edged',
+    text: 'A clean line along the driveway, sidewalk and curb.',
+    icon: 'M6 34h30M6 28h12v6M24 6v20M20 26h8M24 6l5 4',
+  },
+  {
+    title: 'Trimmed',
+    text: "Around the mailbox, fence, beds and anywhere the mower can't reach.",
+    icon: 'M8 34V18M14 34V12M20 34V20M26 34V14M32 34V22M6 34h30',
+  },
+  {
+    title: 'Blown off',
+    text: 'Clippings cleared from the drive, walks and patio before we leave.',
+    icon: 'M6 20h18a4 4 0 1 0-4-4M6 26h24a4 4 0 1 1-4 4M6 14h8',
+  },
+];
+---
+
+<ul class="visit">
+  {
+    items.map((it) => (
+      <li>
+        <svg viewBox="0 0 42 42" width="46" height="46" aria-hidden="true">
+          <path d={it.icon} fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+        <h3>{it.title}</h3>
+        <p>{it.text}</p>
+      </li>
+    ))
+  }
+</ul>
+
+<style>
+  .visit {
+    display: grid;
+    gap: 2rem 2.5rem;
+  }
+
+  @media (min-width: 40rem) {
+    .visit {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  @media (min-width: 62rem) {
+    .visit {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+
+  .visit svg {
+    margin-bottom: 0.9rem;
+    color: var(--grass);
+  }
+
+  .visit h3 {
+    margin-bottom: 0.4rem;
+    font-size: 1.5rem;
+    font-weight: 800;
+  }
+
+  .visit p {
+    margin: 0;
+  }
+</style>

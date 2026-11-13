@@ -1,0 +1,155 @@
+---
+// "What to bring" checklist. Ticks are remembered in this browser only.
+interface Props {
+  groups: { title: string; items: string[] }[];
+  storageKey: string;
+  print?: boolean;
+}
+const { groups, storageKey, print = false } = Astro.props;
+const total = groups.reduce((n, g) => n + g.items.length, 0);
+---
+
+<div class="checklist" data-checklist={storageKey}>
+  <div class="checklist__bar">
+    <p class="checklist__count" aria-live="polite">
+      <strong data-ready>0</strong> of {total} ready
+    </p>
+    <div class="checklist__tools no-print">
+      <button type="button" class="checklist__clear" data-clear>Clear ticks</button>
+      {print && <button type="button" class="btn btn--line" data-print>Print this list</button>}
+    </div>
+  </div>
+
+  {
+    groups.map((g, gi) => (
+      <fieldset>
+        <legend>{g.title}</legend>
+        {g.items.map((item, ii) => (
+          <label>
+            <input type="checkbox" value={`${gi}-${ii}`} />
+            <span>{item}</span>
+          </label>
+        ))}
+      </fieldset>
+    ))
+  }
+</div>
+
+<script>
+  document.querySelectorAll<HTMLElement>('[data-checklist]').forEach((root) => {
+    const key = `tallybrook-${root.dataset.checklist}`;
+    const boxes = [...root.querySelectorAll<HTMLInputElement>('input[type=checkbox]')];
+    const ready = root.querySelector('[data-ready]')!;
+
+    let saved: string[] = [];
+    try {
+      saved = JSON.parse(localStorage.getItem(key) ?? '[]');
+    } catch {}
+    boxes.forEach((b) => (b.checked = saved.includes(b.value)));
+
+    const update = () => {
+      const on = boxes.filter((b) => b.checked).map((b) => b.value);
+      ready.textContent = String(on.length);
+      try {
+        localStorage.setItem(key, JSON.stringify(on));
+      } catch {}
+    };
+    boxes.forEach((b) => b.addEventListener('change', update));
+    root.querySelector('[data-clear]')?.addEventListener('click', () => {
+      boxes.forEach((b) => (b.checked = false));
+      update();
+    });
+    root.querySelector('[data-print]')?.addEventListener('click', () => window.print());
+    update();
+  });
+</script>
+
+<style>
+  .checklist {
+    background: var(--white);
+    border: 1.5px solid var(--ink);
+  }
+
+  .checklist__bar {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.75rem 1.5rem;
+    padding: 0.85rem 1.1rem;
+    border-bottom: 1.5px solid var(--ink);
+    background: var(--box);
+  }
+
+  .checklist__count {
+    margin: 0;
+    font-size: 1.05rem;
+  }
+
+  .checklist__count strong {
+    font-family: var(--slab);
+    font-size: 1.4rem;
+    color: var(--ledger);
+  }
+
+  .checklist__tools {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .checklist__clear {
+    padding: 0;
+    border: 0;
+    background: none;
+    color: var(--ledger);
+    font: inherit;
+    text-decoration: underline;
+    text-underline-offset: 0.18em;
+    cursor: pointer;
+  }
+
+  .checklist fieldset {
+    margin: 0;
+    padding: 0.25rem 1.1rem 0.75rem;
+    border: 0;
+    border-top: 1px solid var(--rule);
+  }
+
+  .checklist fieldset:first-of-type {
+    border-top: 0;
+  }
+
+  .checklist legend {
+    float: left;
+    width: 100%;
+    padding: 0.85rem 0 0.35rem;
+    font-family: var(--slab);
+    font-weight: 600;
+    font-size: 1.15rem;
+  }
+
+  .checklist label {
+    clear: both;
+    display: flex;
+    gap: 0.75rem;
+    align-items: flex-start;
+    padding: 0.45rem 0;
+    cursor: pointer;
+  }
+
+  .checklist input {
+    flex: none;
+    width: 1.3rem;
+    height: 1.3rem;
+    margin: 0.15rem 0 0;
+    accent-color: var(--ledger);
+  }
+
+  .checklist input:checked + span {
+    color: var(--muted);
+    text-decoration: line-through;
+    text-decoration-color: var(--stamp);
+    text-decoration-thickness: 2px;
+  }
+</style>

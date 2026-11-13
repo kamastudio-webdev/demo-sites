@@ -1,0 +1,72 @@
+---
+// The mark is a round patch of freshly mowed stripes with a lark flying over it.
+import { site } from '../site';
+
+interface Props {
+  tone?: 'dark' | 'light';
+}
+const { tone = 'dark' } = Astro.props;
+---
+
+<span class:list={['logo', `logo--${tone}`]}>
+  <svg class="logo__mark" viewBox="0 0 48 48" width="46" height="46" aria-hidden="true">
+    <defs>
+      <clipPath id={`lm-clip-${tone}`}><circle cx="24" cy="24" r="22"></circle></clipPath>
+    </defs>
+    <g clip-path={`url(#lm-clip-${tone})`}>
+      <rect width="48" height="48" fill="#2f7a2e"></rect>
+      <rect x="8" y="0" width="8" height="48" fill="#3d8b38" transform="skewX(-12)"></rect>
+      <rect x="24" y="0" width="8" height="48" fill="#3d8b38" transform="skewX(-12)"></rect>
+      <rect x="40" y="0" width="8" height="48" fill="#3d8b38" transform="skewX(-12)"></rect>
+      <rect x="0" y="0" width="48" height="19" fill="#e1eff7"></rect>
+    </g>
+    <path d="M14 14 q5 -6 10 0 q5 -6 10 0" fill="none" stroke="#173d1c" stroke-width="2.8" stroke-linecap="round"
+    ></path>
+    <circle cx="24" cy="24" r="22" fill="none" stroke="#173d1c" stroke-width="2.5"></circle>
+  </svg>
+  <span class="logo__words">
+    <span class="logo__name">{site.short}</span>
+    <span class="logo__kind">{site.kind}</span>
+  </span>
+</span>
+
+<style>
+  .logo {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.65rem;
+    line-height: 1;
+    color: var(--ink);
+  }
+
+  .logo__mark {
+    flex: none;
+  }
+
+  .logo__words {
+    display: grid;
+    gap: 0.2rem;
+  }
+
+  .logo__name {
+    font-family: var(--display);
+    font-weight: 800;
+    font-stretch: 85%;
+    font-size: 1.6rem;
+    letter-spacing: -0.03em;
+  }
+
+  .logo__kind {
+    font-weight: 600;
+    font-size: 0.82rem;
+    color: var(--grass);
+  }
+
+  .logo--light {
+    color: #fff;
+  }
+
+  .logo--light .logo__kind {
+    color: var(--clipping);
+  }
+</style>

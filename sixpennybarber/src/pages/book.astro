@@ -1,0 +1,30 @@
+---
+import Base from '../layouts/Base.astro';
+import Booking from '../components/Booking.astro';
+import { site } from '../site';
+---
+
+<Base
+  title="Book a Chair | Sixpenny Barber Shop, Denver"
+  description="Book a haircut, fade, beard trim or hot towel shave at Sixpenny Barber Shop in Capitol Hill, Denver."
+  callBand={false}
+>
+  <section class="wrap page-head">
+    <h1>Book a chair</h1>
+    <p class="lede">
+      Pick a barber, a service and a time. You'll get a text the day before. Rather call?{' '}<a href={site.phoneHref}>{site.phone}</a>.
+    </p>
+  </section>
+
+  <section class="band" style="padding-top:0">
+    <div class="wrap narrow">
+      <Booking />
+    </div>
+  </section>
+</Base>
+
+<style>
+  .narrow {
+    max-width: 52rem;
+  }
+</style>

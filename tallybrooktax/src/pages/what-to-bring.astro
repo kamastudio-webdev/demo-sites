@@ -1,0 +1,48 @@
+---
+import Base from '../layouts/Base.astro';
+import Checklist from '../components/Checklist.astro';
+import { bringFull } from '../checklist';
+import { site } from '../site';
+---
+
+<Base
+  title="What to Bring | Tallybrook Tax Service, Columbus"
+  description="A checklist of the papers to bring to your tax appointment: ID, W-2s, 1099s, mortgage and tuition forms, child care details and self-employment records."
+>
+  <section class="wrap page-head">
+    <h1>What to bring to your appointment</h1>
+    <p class="lede">
+      Tick things off as you find them, or print the list and put it on the fridge. Bring what you
+      have even if the list isn't finished.
+    </p>
+  </section>
+
+  <section class="band" style="padding-top:0">
+    <div class="wrap split split--narrow-left">
+      <aside class="tips no-print">
+        <h2>A few tips</h2>
+        <ul class="ruled" style="margin-top:1.25rem">
+          <li>
+            <h3>Most forms arrive by mid-February</h3>
+            <p>Employers send W-2s by January 31. Brokerage forms can come a few weeks later.</p>
+          </li>
+          <li>
+            <h3>Check your online accounts</h3>
+            <p>Many banks and payroll apps only post the form online. Print it or bring it on your phone.</p>
+          </li>
+          <li>
+            <h3>New client?</h3>
+            <p>
+              Bring the last two years of returns so we can check them for anything that was
+              missed.
+            </p>
+          </li>
+        </ul>
+        <p style="margin-top:1.5rem">
+          Questions about a form? Call{' '}<a href={site.phoneHref}>{site.phone}</a>.
+        </p>
+      </aside>
+      <Checklist groups={bringFull} storageKey="full" print />
+    </div>
+  </section>
+</Base>

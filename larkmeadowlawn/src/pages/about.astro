@@ -1,0 +1,91 @@
+---
+import Base from '../layouts/Base.astro';
+---
+
+<Base
+  title="About | Larkmeadow Lawn Care, Raleigh"
+  description="Larkmeadow Lawn Care was started in 2015 by Owen and Talia Brandt with one mower and a pickup. Today four crews mow across Raleigh and the Triangle."
+>
+  <section class="wrap page-head">
+    <h1>One mower, one pickup, and a lot of Saturdays</h1>
+    <p class="lede">
+      Owen Brandt started mowing his neighbors' yards in 2015 to pay for his last year at NC State.
+      His wife Talia ran the schedule from the kitchen table. Ten years later, four crews mow across
+      the Triangle and Talia still runs the schedule.
+    </p>
+  </section>
+
+  <section class="band band--white">
+    <div class="wrap split">
+      <div>
+        <h2>The promise hasn't changed</h2>
+        <p class="lede" style="margin-top:1rem">
+          The first customers didn't care about fancy equipment. They wanted someone who showed up
+          on the same day and did the edges every time. That's still the job.
+        </p>
+      </div>
+      <ul class="ruled">
+        <li>
+          <h3>Same crew, same day</h3>
+          <p>Each crew works one set of neighborhoods, so they know your yard, your gate and your dog.</p>
+        </li>
+        <li>
+          <h3>A text before, a photo after</h3>
+          <p>You'll know when we're coming, and see the yard when we're done even if you're not home.</p>
+        </li>
+        <li>
+          <h3>Quiet equipment</h3>
+          <p>Our trimmers and blowers are battery powered. Your neighbors on a work call will thank you.</p>
+        </li>
+        <li>
+          <h3>Licensed and insured</h3>
+          <p>Our fertilizer and weed control technicians are licensed by the state. Every crew is insured.</p>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="band">
+    <div class="wrap">
+      <ul class="numbers">
+        <li><strong>2015</strong>the year we started</li>
+        <li><strong>4</strong>crews on the road</li>
+        <li><strong>600+</strong>yards mowed each week</li>
+        <li><strong>8</strong>towns in the Triangle</li>
+      </ul>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .numbers {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+  }
+
+  @media (min-width: 56rem) {
+    .numbers {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+
+  .numbers li {
+    padding: 1.5rem;
+    border-radius: var(--radius);
+    background: var(--white);
+    font-weight: 600;
+    color: var(--muted);
+  }
+
+  .numbers strong {
+    display: block;
+    margin-bottom: 0.3rem;
+    font-family: var(--display);
+    font-weight: 800;
+    font-stretch: 85%;
+    font-size: clamp(2.4rem, 5vw, 3.4rem);
+    line-height: 1;
+    color: var(--grass);
+  }
+</style>

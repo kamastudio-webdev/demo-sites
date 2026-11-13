@@ -1,0 +1,157 @@
+---
+import Base from '../layouts/Base.astro';
+import PriceBoard from '../components/PriceBoard.astro';
+---
+
+<Base
+  title="Tire Services and Prices | Oakspur Tire & Wheel, Kansas City"
+  description="Flat repair, mounting and balancing, rotations, alignments and tire pressure sensors in Kansas City, with every price posted."
+>
+  <section class="wrap page-head">
+    <h1>Services and prices</h1>
+    <p class="lede">
+      Everything we do has to do with tires and wheels. That's why a flat takes us half an hour and
+      not half a day.
+    </p>
+  </section>
+
+  <section class="band band--rubber">
+    <div class="wrap split">
+      <div>
+        <h2>The price board</h2>
+        <p class="lede" style="margin-top:1rem">
+          Prices are per car or light truck. Dually and oversize tires cost a little more, and we'll
+          tell you how much before we start.
+        </p>
+      </div>
+      <PriceBoard />
+    </div>
+  </section>
+
+  <section class="band">
+    <div class="wrap split split--wide-right">
+      <h2>What each job covers</h2>
+      <ul class="ruled">
+        <li>
+          <h3>Flat repair</h3>
+          <p>
+            We take the tire off the wheel, check the inside, then plug and patch it from the inside
+            out. A nail in the tread can usually be fixed. Damage in the sidewall can't be, and
+            we'll show you why.
+          </p>
+        </li>
+        <li>
+          <h3>Mounting and balancing</h3>
+          <p>
+            For tires you bought somewhere else. We mount them, balance each wheel on the machine
+            and torque the lug nuts by hand.
+          </p>
+        </li>
+        <li>
+          <h3>Rotation</h3>
+          <p>
+            Moving your tires front to back every 5,000 to 7,000 miles helps them wear evenly. It
+            takes about 15 minutes, and it's free on tires from us.
+          </p>
+        </li>
+        <li>
+          <h3>Alignment</h3>
+          <p>
+            If your car pulls to one side or the steering wheel sits crooked, the alignment is
+            likely off. We set all four wheels and hand you the before and after printout.
+          </p>
+        </li>
+        <li>
+          <h3>Tire pressure sensors</h3>
+          <p>
+            That horseshoe-shaped warning light means a tire is low or a sensor has died. We test
+            all four, replace the bad one and reset the light.
+          </p>
+        </li>
+        <li>
+          <h3>Winter changeover</h3>
+          <p>
+            We swap your winter set on and off each season and mark where each tire came from so
+            they go back in the right spot.
+          </p>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="band band--paper">
+    <div class="wrap split">
+      <div>
+        <h2>Is it time for new tires?</h2>
+        <p class="lede" style="margin-top:1rem">Three checks you can do in your driveway.</p>
+      </div>
+      <ol class="checks">
+        <li>
+          <h3>The penny test</h3>
+          <p>
+            Put a penny in the tread with Lincoln's head pointing down. If you can see the top of
+            his head, the tread is worn out.
+          </p>
+        </li>
+        <li>
+          <h3>The date code</h3>
+          <p>
+            Find the four digits after DOT on the sidewall. The first two are the week and the last
+            two are the year. Tires older than six years are worth having checked.
+          </p>
+        </li>
+        <li>
+          <h3>Cracks and bulges</h3>
+          <p>
+            A bulge in the sidewall means the tire is damaged inside. Don't drive on it. Put the
+            spare on or call us.
+          </p>
+        </li>
+      </ol>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .checks {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    counter-reset: check;
+  }
+
+  .checks li {
+    position: relative;
+    padding: 1.35rem 0 1.35rem 3.5rem;
+    border-top: 1px solid var(--rule);
+    counter-increment: check;
+  }
+
+  .checks li:last-child {
+    border-bottom: 1px solid var(--rule);
+  }
+
+  .checks li::before {
+    content: counter(check);
+    position: absolute;
+    left: 0;
+    top: 1.1rem;
+    width: 2.4rem;
+    height: 2.4rem;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    background: var(--rubber);
+    color: var(--crayon);
+    font-family: var(--marker);
+    font-size: 1.3rem;
+  }
+
+  .checks h3 {
+    margin-bottom: 0.4rem;
+  }
+
+  .checks p {
+    margin-bottom: 0;
+  }
+</style>

@@ -1,0 +1,452 @@
+---
+// Demo booking form. It shows open times and a confirmation, but nothing is
+// actually booked or sent. On a real site this would connect to a booking app.
+import { services, barbers } from '../shop';
+---
+
+<form class="book" data-booking data-services={JSON.stringify(services)} data-barbers={JSON.stringify(barbers)} novalidate>
+  <fieldset>
+    <legend><span class="book__no">1</span>Pick a barber</legend>
+    <div class="book__grid book__grid--barbers">
+      {
+        barbers.map((b, i) => (
+          <label class="book__opt">
+            <input type="radio" name="barber" value={b.id} checked={i === 0} />
+            <span class="book__opt-title">{b.name}</span>
+            <span class="book__opt-note">{b.good}</span>
+          </label>
+        ))
+      }
+      <label class="book__opt">
+        <input type="radio" name="barber" value="any" />
+        <span class="book__opt-title">Whoever's free first</span>
+        <span class="book__opt-note">Shows the most open times</span>
+      </label>
+    </div>
+  </fieldset>
+
+  <fieldset>
+    <legend><span class="book__no">2</span>Pick a service</legend>
+    <div class="book__grid">
+      {
+        services.map((s, i) => (
+          <label class="book__opt book__opt--row">
+            <input type="radio" name="service" value={s.id} checked={i === 0} />
+            <span class="book__opt-title">{s.name}</span>
+            <span class="book__opt-note">
+              {s.minutes} min, ${s.price}
+            </span>
+          </label>
+        ))
+      }
+    </div>
+  </fieldset>
+
+  <fieldset>
+    <legend><span class="book__no">3</span>Pick a day</legend>
+    <div class="book__days" data-days></div>
+  </fieldset>
+
+  <fieldset>
+    <legend><span class="book__no">4</span>Pick a time</legend>
+    <div class="book__times" data-times></div>
+    <p class="book__empty" data-empty hidden>No open times left that day. Try the next one.</p>
+  </fieldset>
+
+  <fieldset>
+    <legend><span class="book__no">5</span>Your details</legend>
+    <div class="book__details">
+      <label class="book__field">
+        <span>Your name</span>
+        <input name="name" type="text" autocomplete="name" data-required />
+      </label>
+      <label class="book__field">
+        <span>Mobile number, for a reminder text</span>
+        <input name="phone" type="tel" autocomplete="tel" data-required />
+      </label>
+    </div>
+  </fieldset>
+
+  <div class="book__end">
+    <p class="book__summary" data-summary aria-live="polite"></p>
+    <button class="btn btn--primary" type="submit">Book it</button>
+    <p class="book__status" data-status role="status" tabindex="-1" hidden></p>
+  </div>
+</form>
+
+<script>
+  type Service = { id: string; name: string; minutes: number; price: number };
+  type Barber = { id: string; name: string };
+
+  // Opening hours by day of the week (0 = Sunday). Monday is closed.
+  const HOURS: Record<number, [number, number] | null> = {
+    0: [10, 15],
+    1: null,
+    2: [10, 19],
+    3: [10, 19],
+    4: [10, 19],
+    5: [10, 19],
+    6: [8, 16],
+  };
+
+  // A made-up but steady pattern of taken slots, so the demo looks like a real book.
+  const taken = (key: string) => {
+    let h = 2166136261;
+    for (const c of key) h = Math.imul(h ^ c.charCodeAt(0), 16777619);
+    return (h >>> 0) % 100 < 42;
+  };
+
+  const fmtTime = (mins: number) => {
+    const h = Math.floor(mins / 60);
+    const m = mins % 60;
+    return `${((h + 11) % 12) + 1}:${String(m).padStart(2, '0')} ${h < 12 ? 'am' : 'pm'}`;
+  };
+
+  document.querySelectorAll<HTMLFormElement>('[data-booking]').forEach((form) => {
+    const services: Service[] = JSON.parse(form.dataset.services!);
+    const barbers: Barber[] = JSON.parse(form.dataset.barbers!);
+    const daysEl = form.querySelector<HTMLElement>('[data-days]')!;
+    const timesEl = form.querySelector<HTMLElement>('[data-times]')!;
+    const emptyEl = form.querySelector<HTMLElement>('[data-empty]')!;
+    const summary = form.querySelector<HTMLElement>('[data-summary]')!;
+    const status = form.querySelector<HTMLElement>('[data-status]')!;
+
+    const wanted = new URLSearchParams(location.search).get('barber');
+    const pre = form.querySelector<HTMLInputElement>(`input[name=barber][value="${wanted}"]`);
+    if (pre) pre.checked = true;
+
+    // The next six days the shop is open.
+    const now = new Date();
+    const days: Date[] = [];
+    for (let i = 0; days.length < 6 && i < 14; i++) {
+      const d = new Date(now.getFullYear(), now.getMonth(), now.getDate() + i);
+      if (HOURS[d.getDay()]) days.push(d);
+    }
+    let day = 0;
+    let time: number | null = null;
+
+    const value = (name: string) => form.querySelector<HTMLInputElement>(`input[name=${name}]:checked`)!.value;
+
+    const renderDays = () => {
+      daysEl.innerHTML = '';
+      days.forEach((d, i) => {
+        const b = document.createElement('button');
+        b.type = 'button';
+        b.className = 'book__day';
+        b.setAttribute('aria-pressed', String(i === day));
+        const label = i === 0 && d.toDateString() === now.toDateString() ? 'Today' : d.toLocaleDateString('en-US', { weekday: 'short' });
+        b.innerHTML = `<span>${label}</span><strong>${d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}</strong>`;
+        b.addEventListener('click', () => {
+          day = i;
+          time = null;
+          renderDays();
+          renderTimes();
+        });
+        daysEl.append(b);
+      });
+    };
+
+    const renderTimes = () => {
+      const d = days[day];
+      const [open, close] = HOURS[d.getDay()]!;
+      const svc = services.find((s) => s.id === value('service'))!;
+      const who = value('barber');
+      const ids = who === 'any' ? barbers.map((b) => b.id) : [who];
+      const isToday = d.toDateString() === now.toDateString();
+      const nowMins = now.getHours() * 60 + now.getMinutes() + 30;
+
+      timesEl.innerHTML = '';
+      let shown = 0;
+      for (let m = open * 60; m + svc.minutes <= close * 60; m += 30) {
+        if (isToday && m < nowMins) continue;
+        const free = ids.some((id) => !taken(`${id}|${d.toDateString()}|${m}`));
+        const b = document.createElement('button');
+        b.type = 'button';
+        b.className = 'book__time';
+        b.textContent = fmtTime(m);
+        b.disabled = !free;
+        if (!free) b.setAttribute('aria-label', `${fmtTime(m)}, taken`);
+        b.setAttribute('aria-pressed', String(time === m));
+        b.addEventListener('click', () => {
+          time = m;
+          renderTimes();
+        });
+        timesEl.append(b);
+        if (free) shown++;
+      }
+      if (time !== null && ![...timesEl.children].some((c) => (c as HTMLButtonElement).getAttribute('aria-pressed') === 'true' && !(c as HTMLButtonElement).disabled)) time = null;
+      emptyEl.hidden = shown > 0;
+      renderSummary();
+    };
+
+    const renderSummary = () => {
+      const svc = services.find((s) => s.id === value('service'))!;
+      const who = value('barber');
+      const barber = who === 'any' ? 'the first free barber' : barbers.find((b) => b.id === who)!.name;
+      const d = days[day].toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' });
+      summary.textContent =
+        time === null
+          ? `${svc.name} with ${barber} on ${d}. Pick a time.`
+          : `${svc.name} with ${barber}, ${d} at ${fmtTime(time)}. $${svc.price}, paid at the shop.`;
+    };
+
+    form.querySelectorAll('input[type=radio]').forEach((r) =>
+      r.addEventListener('change', () => {
+        renderTimes();
+      }),
+    );
+
+    form.addEventListener('submit', (event) => {
+      event.preventDefault();
+      status.hidden = false;
+      const empty = [...form.querySelectorAll<HTMLInputElement>('[data-required]')].filter((i) => !i.value.trim());
+      form.querySelectorAll<HTMLInputElement>('[data-required]').forEach((i) => i.setAttribute('aria-invalid', String(!i.value.trim())));
+      if (time === null) {
+        status.dataset.kind = 'error';
+        status.textContent = 'Pick a time first.';
+        timesEl.querySelector<HTMLButtonElement>('button:not(:disabled)')?.focus();
+        return;
+      }
+      if (empty.length) {
+        status.dataset.kind = 'error';
+        status.textContent = 'Add your name and mobile number so the shop can text you a reminder.';
+        empty[0].focus();
+        return;
+      }
+      const first = (form.elements.namedItem('name') as HTMLInputElement).value.trim().split(' ')[0];
+      status.dataset.kind = 'ok';
+      status.textContent = `Thanks, ${first}. This is a demo, so nothing was booked. On a real site, the barber gets the booking and you get a confirmation text.`;
+      status.focus();
+    });
+
+    // Late in the day, start on the next open day instead of a nearly full today.
+    renderTimes();
+    const freeToday = timesEl.querySelectorAll('button:not(:disabled)').length;
+    if (days[0].toDateString() === now.toDateString() && freeToday < 4) day = 1;
+    renderDays();
+    renderTimes();
+  });
+</script>
+
+<style>
+  .book {
+    display: grid;
+    gap: 2rem;
+  }
+
+  .book fieldset {
+    margin: 0;
+    padding: 0;
+    border: 0;
+  }
+
+  .book legend {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 0.9rem;
+    padding: 0;
+    font-family: var(--serif);
+    font-weight: 700;
+    font-size: 1.55rem;
+  }
+
+  .book__no {
+    display: grid;
+    place-items: center;
+    width: 2.1rem;
+    height: 2.1rem;
+    border-radius: 50%;
+    background: var(--oxblood);
+    color: #fff;
+    font-family: var(--sans);
+    font-size: 1rem;
+    font-weight: 500;
+  }
+
+  .book__grid {
+    display: grid;
+    gap: 0.5rem;
+  }
+
+  @media (min-width: 40rem) {
+    .book__grid {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  .book__opt {
+    position: relative;
+    display: grid;
+    gap: 0.15rem;
+    padding: 0.85rem 1rem;
+    border: 1.5px solid var(--line);
+    background: var(--white);
+    cursor: pointer;
+  }
+
+  .book__opt--row {
+    grid-template-columns: 1fr auto;
+    align-items: baseline;
+    gap: 1rem;
+  }
+
+  .book__opt input {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .book__opt:has(input:checked) {
+    border-color: var(--oxblood);
+    box-shadow: inset 0 0 0 1.5px var(--oxblood);
+    background: #fbf3f3;
+  }
+
+  .book__opt:has(input:focus-visible) {
+    outline: 3px solid var(--oxblood);
+    outline-offset: 2px;
+  }
+
+  .book__opt-title {
+    font-weight: 500;
+  }
+
+  .book__opt-note {
+    font-size: 0.92rem;
+    color: var(--muted);
+  }
+
+  .book__days {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.5rem;
+  }
+
+  @media (min-width: 40rem) {
+    .book__days {
+      grid-template-columns: repeat(6, 1fr);
+    }
+  }
+
+  .book :global(.book__day) {
+    display: grid;
+    gap: 0.1rem;
+    padding: 0.7rem 0.4rem;
+    border: 1.5px solid var(--line);
+    background: var(--white);
+    color: var(--ink);
+    font: inherit;
+    cursor: pointer;
+  }
+
+  .book :global(.book__day span) {
+    font-size: 0.9rem;
+    color: var(--muted);
+  }
+
+  .book :global(.book__day strong) {
+    font-family: var(--serif);
+    font-size: 1.2rem;
+  }
+
+  .book :global(.book__day[aria-pressed='true']),
+  .book :global(.book__time[aria-pressed='true']) {
+    background: var(--oxblood);
+    border-color: var(--oxblood);
+    color: #fff;
+  }
+
+  .book :global(.book__day[aria-pressed='true'] span) {
+    color: rgb(255 255 255 / 0.8);
+  }
+
+  .book__times {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(6.5rem, 1fr));
+    gap: 0.45rem;
+  }
+
+  .book :global(.book__time) {
+    padding: 0.6rem 0.4rem;
+    border: 1.5px solid var(--line);
+    background: var(--white);
+    color: var(--ink);
+    font: inherit;
+    font-weight: 500;
+    cursor: pointer;
+  }
+
+  .book :global(.book__time:disabled) {
+    background: transparent;
+    border-style: dashed;
+    color: #a39d99;
+    text-decoration: line-through;
+    cursor: not-allowed;
+  }
+
+  .book__empty {
+    margin: 0.75rem 0 0;
+    color: var(--muted);
+  }
+
+  .book__details {
+    display: grid;
+    gap: 1rem;
+  }
+
+  @media (min-width: 40rem) {
+    .book__details {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  .book__field {
+    display: grid;
+    gap: 0.35rem;
+    font-weight: 500;
+  }
+
+  .book__field input {
+    width: 100%;
+    padding: 0.8rem 0.9rem;
+    border: var(--form-border);
+    background: var(--white);
+    color: var(--ink);
+    font: inherit;
+    font-weight: 400;
+  }
+
+  .book__field input[aria-invalid='true'] {
+    border-color: var(--form-error);
+  }
+
+  .book__end {
+    display: grid;
+    gap: 1rem;
+    justify-items: start;
+    padding-top: 1.5rem;
+    border-top: 3px double var(--ink);
+  }
+
+  .book__summary {
+    margin: 0;
+    font-family: var(--serif);
+    font-weight: 600;
+    font-size: 1.3rem;
+    line-height: 1.3;
+  }
+
+  .book__status {
+    margin: 0;
+    padding: 0.85rem 1rem;
+    border-left: 6px solid var(--oxblood);
+    background: var(--mint);
+    font-weight: 500;
+  }
+
+  .book__status[data-kind='error'] {
+    border-left-color: var(--form-error);
+    background: #fbeeee;
+  }
+</style>

@@ -1,0 +1,192 @@
+---
+// The home page's form card: how many days until the federal deadline.
+// It's worked out when the site is built, then again in the visitor's browser.
+import { nextDeadline, longDate } from '../deadline';
+const d = nextDeadline();
+---
+
+<figure class="formcard" data-deadline>
+  <figcaption class="formcard__head">
+    <span class="formcard__title">Your filing season at a glance</span>
+    <span class="formcard__year">Tax year <span data-dl="taxYear">{d.taxYear}</span></span>
+  </figcaption>
+
+  <dl class="formcard__lines">
+    <div class="formcard__line formcard__line--big">
+      <dt><span class="formcard__no">1</span>Days until federal returns are due</dt>
+      <dd data-dl="days">{d.days}</dd>
+    </div>
+    <div class="formcard__line">
+      <dt><span class="formcard__no">2</span>Filing deadline</dt>
+      <dd data-dl="due">{longDate(d.due)}</dd>
+    </div>
+    <div class="formcard__line">
+      <dt><span class="formcard__no">3</span>With an extension</dt>
+      <dd data-dl="ext">{longDate(d.extension)}</dd>
+    </div>
+    <div class="formcard__line">
+      <dt><span class="formcard__no">4</span>Usual wait for an e-filed refund</dt>
+      <dd>About 3 weeks</dd>
+    </div>
+  </dl>
+
+  <p class="formcard__stamp" aria-hidden="true">E-filed</p>
+</figure>
+
+<script>
+  import { nextDeadline, longDate } from '../deadline';
+  const d = nextDeadline();
+  const set = (key: string, value: string) =>
+    document.querySelectorAll(`[data-dl="${key}"]`).forEach((el) => (el.textContent = value));
+  set('days', String(d.days));
+  set('due', longDate(d.due));
+  set('ext', longDate(d.extension));
+  set('taxYear', String(d.taxYear));
+</script>
+
+<style>
+  .formcard {
+    position: relative;
+    margin: 0;
+    background: var(--white);
+    border: 1.5px solid var(--ink);
+    box-shadow: 0 1px 0 var(--rule), 0 18px 40px -24px rgb(28 39 64 / 0.45);
+  }
+
+  .formcard__head {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 1rem;
+    padding: 0.85rem 1.1rem;
+    background: var(--ink);
+    color: #fff;
+  }
+
+  .formcard__title {
+    font-family: var(--slab);
+    font-weight: 600;
+    font-size: 1.1rem;
+  }
+
+  .formcard__year {
+    font-size: 0.88rem;
+    white-space: nowrap;
+    color: rgb(255 255 255 / 0.8);
+  }
+
+  .formcard__lines {
+    margin: 0;
+  }
+
+  .formcard__line {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: center;
+    gap: 1rem;
+    border-top: 1px solid var(--rule);
+  }
+
+  .formcard__line:first-child {
+    border-top: 0;
+  }
+
+  .formcard dt {
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+    padding: 0.8rem 0 0.8rem 0;
+    font-size: 0.95rem;
+  }
+
+  .formcard__no {
+    flex: none;
+    display: grid;
+    place-items: center;
+    width: 2.6rem;
+    align-self: stretch;
+    border-right: 1px solid var(--rule);
+    font-weight: 600;
+    color: var(--muted);
+  }
+
+  .formcard dd {
+    margin: 0;
+    padding: 0.55rem 1.1rem;
+    align-self: stretch;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    min-width: 9rem;
+    background: var(--box);
+    border-left: 1px solid var(--rule);
+    font-weight: 600;
+    text-align: right;
+  }
+
+  .formcard__line--big dt {
+    font-weight: 600;
+    font-size: 1.02rem;
+  }
+
+  .formcard__line--big dd {
+    font-family: var(--slab);
+    font-weight: 700;
+    font-size: clamp(3.4rem, 8vw, 5rem);
+    line-height: 1;
+    color: var(--ledger);
+    padding-block: 0.9rem;
+  }
+
+  .formcard__stamp {
+    position: absolute;
+    right: 1.1rem;
+    bottom: -2.35rem;
+    margin: 0;
+    padding: 0.2rem 0.8rem 0.3rem;
+    border: 3px solid var(--stamp);
+    border-radius: 6px;
+    background: rgb(255 255 255 / 0.85);
+    color: var(--stamp);
+    font-family: var(--slab);
+    font-weight: 700;
+    font-size: 1.55rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    transform: rotate(-7deg);
+    mix-blend-mode: multiply;
+  }
+
+  @media (max-width: 30rem) {
+    .formcard dt {
+      font-size: 0.9rem;
+      gap: 0.6rem;
+    }
+
+    .formcard__no {
+      width: 2rem;
+    }
+
+    .formcard__line:not(.formcard__line--big) dd {
+      min-width: 0;
+      padding-inline: 0.75rem;
+      font-size: 0.9rem;
+    }
+
+    .formcard__line--big dd {
+      min-width: 0;
+      font-size: 3.2rem;
+    }
+
+    .formcard__line:not(.formcard__line--big) {
+      grid-template-columns: 1fr;
+      gap: 0;
+    }
+
+    .formcard__line:not(.formcard__line--big) dd {
+      justify-content: flex-start;
+      border-left: 0;
+      padding-left: 2.85rem;
+    }
+  }
+</style>

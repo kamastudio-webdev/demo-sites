@@ -1,0 +1,179 @@
+---
+import Base from '../layouts/Base.astro';
+
+const team = [
+  {
+    initials: 'LM',
+    name: 'Lena Marsh, EA',
+    role: 'Owner and preparer',
+    text: 'Enrolled agent, licensed by the IRS to represent clients. Opened Tallybrook in 2004 after nine years at a national tax chain.',
+  },
+  {
+    initials: 'RO',
+    name: 'Ray Okafor',
+    role: 'Preparer',
+    text: 'Handles most of our self-employed and rental property clients. Fluent in rideshare mileage logs.',
+  },
+  {
+    initials: 'DW',
+    name: 'Dana Whitlock',
+    role: 'Preparer and office manager',
+    text: 'Books appointments, chases down missing forms, and prepares returns for retirees and families.',
+  },
+];
+---
+
+<Base
+  title="About | Tallybrook Tax Service, Columbus"
+  description="Tallybrook Tax Service is a small, year-round tax office in Columbus, Ohio, opened in 2004 by enrolled agent Lena Marsh."
+>
+  <section class="wrap page-head">
+    <h1>A small tax office that stays open all year</h1>
+    <p class="lede">
+      Lena Marsh opened Tallybrook in 2004 with one desk and a list of neighbors. Most of those
+      neighbors still come back every winter.
+    </p>
+  </section>
+
+  <section class="band band--white">
+    <div class="wrap split split--narrow-left">
+      <h2>Why we work this way</h2>
+      <div>
+        <p class="lede">
+          At the chain, Lena's job was to finish returns fast and sell add-ons at the end. She
+          wanted an office where people understood their own return and knew what it would cost
+          before they sat down.
+        </p>
+        <p>
+          So the fee is set up front. You keep the same preparer, who knows your situation and
+          doesn't need it explained again. And the office stays open after April, because that's
+          when the IRS letters show up.
+        </p>
+        <p>
+          Your papers stay in the office or in our encrypted client portal. We never email Social
+          Security numbers.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="band">
+    <div class="wrap">
+      <h2 class="section-title">The people who'll do your return</h2>
+      <ul class="team">
+        {
+          team.map((p) => (
+            <li>
+              <span class="team__badge" aria-hidden="true">
+                {p.initials}
+              </span>
+              <h3>{p.name}</h3>
+              <p class="team__role">{p.role}</p>
+              <p>{p.text}</p>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <section class="band band--white">
+    <div class="wrap">
+      <dl class="facts">
+        <div>
+          <dt>Opened</dt>
+          <dd>2004</dd>
+        </div>
+        <div>
+          <dt>Returns each year</dt>
+          <dd>About 1,400</dd>
+        </div>
+        <div>
+          <dt>Clients who come back</dt>
+          <dd>9 in 10</dd>
+        </div>
+        <div>
+          <dt>Fee for an IRS letter on our returns</dt>
+          <dd>$0</dd>
+        </div>
+      </dl>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .section-title {
+    margin-bottom: clamp(1.75rem, 4vw, 2.5rem);
+  }
+
+  .team {
+    display: grid;
+    gap: 2rem;
+  }
+
+  @media (min-width: 56rem) {
+    .team {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  .team li {
+    padding-top: 1.5rem;
+    border-top: 1.5px solid var(--ink);
+  }
+
+  .team__badge {
+    display: grid;
+    place-items: center;
+    width: 4.25rem;
+    height: 4.25rem;
+    margin-bottom: 1rem;
+    border-radius: 50%;
+    background: var(--box);
+    border: 1.5px solid var(--ledger);
+    color: var(--ledger);
+    font-family: var(--slab);
+    font-weight: 700;
+    font-size: 1.4rem;
+  }
+
+  .team__role {
+    margin: 0.25rem 0 0.6rem;
+    font-weight: 600;
+    color: var(--ledger);
+  }
+
+  .facts {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    margin: 0;
+    border: 1.5px solid var(--ink);
+    background: var(--white);
+  }
+
+  @media (min-width: 56rem) {
+    .facts {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+
+  .facts div {
+    padding: 1.1rem 1.2rem 1.25rem;
+    border-right: 1px solid var(--rule);
+    border-bottom: 1px solid var(--rule);
+  }
+
+  .facts dt {
+    font-size: 0.92rem;
+    color: var(--muted);
+  }
+
+  .facts dd {
+    margin: 0.35rem 0 0;
+    font-family: var(--slab);
+    font-weight: 700;
+    font-size: clamp(1.8rem, 3.5vw, 2.4rem);
+    line-height: 1.05;
+    color: var(--ledger);
+  }
+</style>

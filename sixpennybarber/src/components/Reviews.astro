@@ -1,0 +1,72 @@
+---
+// Made-up reviews, labeled as samples.
+const reviews = [
+  {
+    text: 'Marisol has done my fade every two weeks for three years. I book the next one on my way out the door.',
+    who: 'Jordan K., Uptown',
+  },
+  {
+    text: 'Got a hot towel shave from Dex the morning of my wedding. Best twenty minutes of the whole day, and my groomsmen all booked after.',
+    who: 'Sam P., Cheesman Park',
+  },
+  {
+    text: "My son is scared of clippers. Dex let him hold them first and turned it into a game. He asks when we're going back.",
+    who: 'Rachel H., Congress Park',
+  },
+];
+---
+
+<ul class="reviews">
+  {
+    reviews.map((r) => (
+      <li>
+        <p class="reviews__tag">Sample review</p>
+        <blockquote>
+          <p>{r.text}</p>
+        </blockquote>
+        <p class="reviews__who">{r.who}</p>
+      </li>
+    ))
+  }
+</ul>
+
+<style>
+  .reviews {
+    display: grid;
+    gap: 2.25rem;
+  }
+
+  @media (min-width: 56rem) {
+    .reviews {
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2.75rem;
+    }
+  }
+
+  .reviews li {
+    padding-top: 1.25rem;
+    border-top: 3px double var(--ink);
+  }
+
+  .reviews__tag {
+    margin: 0 0 0.6rem;
+    font-size: 0.86rem;
+    color: var(--muted);
+  }
+
+  .reviews blockquote {
+    margin: 0 0 1rem;
+  }
+
+  .reviews blockquote p {
+    font-family: var(--serif);
+    font-weight: 500;
+    font-size: 1.3rem;
+    line-height: 1.35;
+  }
+
+  .reviews__who {
+    margin: 0;
+    font-weight: 500;
+  }
+</style>

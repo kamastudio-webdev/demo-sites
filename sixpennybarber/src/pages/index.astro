@@ -1,0 +1,120 @@
+---
+import Base from '../layouts/Base.astro';
+import BarberPole from '../components/BarberPole.astro';
+import MenuBoard from '../components/MenuBoard.astro';
+import BarberList from '../components/BarberList.astro';
+import Reviews from '../components/Reviews.astro';
+import { site } from '../site';
+---
+
+<Base
+  title="Sixpenny Barber Shop | Haircuts and Shaves in Capitol Hill, Denver"
+  description="Classic haircuts, skin fades, beard trims and hot towel shaves in Capitol Hill, Denver. Book a chair online or walk in when one is free."
+>
+  <section class="hero">
+    <div class="wrap hero__row">
+      <div class="hero__text">
+        <h1>Classic cuts and hot towel shaves in Capitol Hill</h1>
+        <p class="lede">
+          Three chairs, three barbers, and no rush. Book a time online, or walk in and we'll take
+          you as soon as a chair opens up.
+        </p>
+        <div class="btn-row">
+          <a class="btn btn--primary" href={site.cta.href}>{site.cta.label}</a>
+          <a class="btn btn--line" href="/services">See prices</a>
+        </div>
+        <p class="hero__hours">Open Tuesday to Sunday. Saturdays from 8 am.</p>
+      </div>
+      <div class="hero__pole">
+        <BarberPole />
+      </div>
+    </div>
+  </section>
+  <div class="tiles" aria-hidden="true"></div>
+
+  <section class="band">
+    <div class="wrap">
+      <div class="center head">
+        <h2>Prices</h2>
+        <p class="lede">Every cut ends with a hot towel and a straight-razor neck shave.</p>
+      </div>
+      <MenuBoard />
+      <p class="center more"><a href="/services">See every service</a></p>
+    </div>
+  </section>
+
+  <section class="band band--white">
+    <div class="wrap">
+      <div class="center head">
+        <h2>Your barbers</h2>
+        <p class="lede">Each one has a specialty. Ask for them by name, or take whoever's free.</p>
+      </div>
+      <BarberList />
+    </div>
+  </section>
+
+  <section class="band">
+    <div class="wrap">
+      <div class="center head">
+        <h2>From the chair</h2>
+      </div>
+      <Reviews />
+    </div>
+  </section>
+</Base>
+
+<style>
+  .hero {
+    background: var(--mint);
+  }
+
+  .hero__row {
+    display: grid;
+    gap: 2.5rem;
+    align-items: center;
+    padding-block: clamp(3rem, 7vw, 5.5rem);
+  }
+
+  @media (min-width: 52rem) {
+    .hero__row {
+      grid-template-columns: 1fr auto;
+      gap: 5rem;
+    }
+  }
+
+  .hero h1 {
+    max-width: 14ch;
+  }
+
+  .hero .lede {
+    margin: 1.5rem 0 1.9rem;
+  }
+
+  .hero__hours {
+    margin: 1.4rem 0 0;
+    color: var(--muted);
+  }
+
+  .hero__pole {
+    justify-self: center;
+  }
+
+  @media (max-width: 51.99rem) {
+    .hero__pole {
+      display: none;
+    }
+  }
+
+  .head {
+    margin-bottom: clamp(2rem, 4.5vw, 3rem);
+  }
+
+  .head .lede {
+    margin: 1rem auto 0;
+  }
+
+  .more {
+    margin: 1.75rem auto 0;
+    font-weight: 500;
+  }
+</style>

@@ -1,0 +1,113 @@
+---
+import Base from '../layouts/Base.astro';
+import ContactForm from '../components/ContactForm.astro';
+import { site } from '../site';
+---
+
+<Base
+  title="Free Quote | Larkmeadow Lawn Care, Raleigh"
+  description="Get a free lawn care quote in Raleigh, Cary, Apex, Garner and across the Triangle. Send your address and we'll text a price the same day."
+  callBand={false}
+>
+  <section class="wrap page-head">
+    <h1>Get a free quote</h1>
+    <p class="lede">
+      Send us the address. We'll look at the yard from the street, no need to be home, and text
+      you a price the same business day.
+    </p>
+  </section>
+
+  <section class="band" style="padding-top:0">
+    <div class="wrap split split--wide-left">
+      <div class="panel">
+        <ContactForm
+          submitLabel="Send for a quote"
+          missing="Add your name and phone number so we can text you a price."
+          thanks="This is a demo, so nothing was sent. On a real site, this request lands in the owner's inbox."
+          fields={[
+            { id: 'name', label: 'Your name', required: true, autocomplete: 'name' },
+            { id: 'phone', label: 'Mobile number', type: 'tel', required: true, autocomplete: 'tel' },
+            { id: 'address', label: 'Address of the yard', autocomplete: 'street-address', placeholder: 'Street, city' },
+            {
+              id: 'service',
+              label: 'What are you looking for?',
+              type: 'select',
+              options: [
+                'Weekly mowing',
+                'Every-other-week mowing',
+                'Fertilizer and weed control',
+                'Aeration and overseeding',
+                'Leaf cleanup',
+                'Hedges, pine straw or mulch',
+                'Not sure yet',
+              ],
+            },
+            { id: 'message', label: 'Anything we should know?', type: 'textarea', rows: 4, placeholder: 'Gate code, dog in the yard, steep hill out back' },
+          ]}
+        />
+      </div>
+
+      <div class="side">
+        <h2>Call or text</h2>
+        <p class="side__phone"><a href={site.phoneHref}>{site.phone}</a></p>
+        <dl class="side__hours">
+          {
+            site.hours.map((h) => (
+              <>
+                <dt>{h.days}</dt>
+                <dd>{h.time}</dd>
+              </>
+            ))
+          }
+        </dl>
+        <h2 class="side__h">Where we mow</h2>
+        <ul class="chips">
+          {site.areas.map((a) => <li>{a}</li>)}
+        </ul>
+        <p class="side__note">Just outside these towns? Ask anyway. If a crew passes by, we can usually fit you in.</p>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .side h2 {
+    font-size: clamp(1.6rem, 3vw, 2.1rem);
+  }
+
+  .side__phone {
+    margin: 0.6rem 0 1rem;
+    font-family: var(--display);
+    font-weight: 800;
+    font-stretch: 88%;
+    font-size: clamp(1.9rem, 3.5vw, 2.5rem);
+    line-height: 1;
+  }
+
+  .side__phone a {
+    text-decoration: none;
+  }
+
+  .side__hours {
+    display: grid;
+    gap: 0.15rem;
+    margin: 0 0 2rem;
+  }
+
+  .side__hours dt {
+    font-weight: 700;
+  }
+
+  .side__hours dd {
+    margin: 0 0 0.5rem;
+  }
+
+  .side__h {
+    margin-bottom: 1rem;
+  }
+
+  .side__note {
+    margin-top: 1.25rem;
+    color: var(--muted);
+  }
+</style>

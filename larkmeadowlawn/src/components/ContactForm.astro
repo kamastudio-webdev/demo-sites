@@ -1,0 +1,141 @@
+---
+// Demo form: it never sends anything. It only shows a message so a
+// visitor can see how the form behaves. Styled with --form-* in global.css.
+interface Field {
+  id: string;
+  label: string;
+  type?: 'text' | 'tel' | 'email' | 'textarea' | 'select';
+  required?: boolean;
+  placeholder?: string;
+  autocomplete?: string;
+  options?: string[];
+  rows?: number;
+}
+interface Props {
+  fields: Field[];
+  submitLabel?: string;
+  missing?: string;
+  thanks?: string;
+}
+const {
+  fields,
+  submitLabel = 'Send message',
+  missing = 'Add your name and phone number so we can call you back.',
+  thanks = "This is a demo, so nothing was sent. On a real site, this message lands in the owner's inbox.",
+} = Astro.props;
+---
+
+<form class="dform" data-demo-form data-missing={missing} data-thanks={thanks} novalidate>
+  {
+    fields.map((f) => (
+      <div class="dform__field">
+        <label for={`df-${f.id}`}>
+          {f.label}
+          {!f.required && <span class="dform__opt"> (optional)</span>}
+        </label>
+        {f.type === 'textarea' ? (
+          <textarea id={`df-${f.id}`} name={f.id} rows={f.rows ?? 5} placeholder={f.placeholder} />
+        ) : f.type === 'select' ? (
+          <select id={`df-${f.id}`} name={f.id}>
+            {(f.options ?? []).map((o) => (
+              <option>{o}</option>
+            ))}
+          </select>
+        ) : (
+          <input
+            id={`df-${f.id}`}
+            name={f.id}
+            type={f.type ?? 'text'}
+            autocomplete={f.autocomplete}
+            placeholder={f.placeholder}
+            data-required={f.required ? '' : undefined}
+          />
+        )}
+      </div>
+    ))
+  }
+
+  <button class="btn btn--primary" type="submit">{submitLabel}</button>
+
+  <p class="dform__status" role="status" tabindex="-1" hidden></p>
+</form>
+
+<script>
+  document.querySelectorAll<HTMLFormElement>('[data-demo-form]').forEach((form) => {
+    const status = form.querySelector<HTMLElement>('.dform__status')!;
+    form.addEventListener('submit', (event) => {
+      event.preventDefault();
+      const required = [...form.querySelectorAll<HTMLInputElement>('[data-required]')];
+      const empty = required.filter((el) => !el.value.trim());
+      required.forEach((el) => el.setAttribute('aria-invalid', String(!el.value.trim())));
+
+      status.hidden = false;
+      if (empty.length) {
+        status.dataset.kind = 'error';
+        status.textContent = form.dataset.missing ?? '';
+        empty[0].focus();
+        return;
+      }
+      const name = (form.elements.namedItem('name') as HTMLInputElement | null)?.value.trim() ?? '';
+      status.dataset.kind = 'ok';
+      status.textContent = `${name ? `Thanks, ${name.split(' ')[0]}. ` : 'Thanks. '}${form.dataset.thanks}`;
+      status.focus();
+    });
+  });
+</script>
+
+<style>
+  .dform {
+    display: grid;
+    gap: 1.1rem;
+    justify-items: start;
+  }
+
+  .dform__field {
+    display: grid;
+    gap: 0.35rem;
+    width: 100%;
+  }
+
+  .dform label {
+    font-weight: 600;
+  }
+
+  .dform__opt {
+    font-weight: 400;
+    color: var(--form-muted);
+  }
+
+  .dform input,
+  .dform textarea,
+  .dform select {
+    width: 100%;
+    padding: 0.75rem 0.85rem;
+    border: var(--form-border);
+    border-radius: var(--form-radius);
+    background: var(--form-bg);
+    color: var(--form-ink);
+    font: inherit;
+  }
+
+  .dform [aria-invalid='true'] {
+    border-color: var(--form-error);
+  }
+
+  .dform ::placeholder {
+    color: var(--form-muted);
+  }
+
+  .dform__status {
+    margin: 0;
+    padding: 0.85rem 1rem;
+    border-left: 6px solid var(--form-accent);
+    border-radius: 2px;
+    background: var(--form-status-bg);
+    font-weight: 600;
+  }
+
+  .dform__status[data-kind='error'] {
+    border-left-color: var(--form-error);
+  }
+</style>

@@ -1,0 +1,133 @@
+---
+import Base from '../layouts/Base.astro';
+import YearCalendar from '../components/YearCalendar.astro';
+import EveryVisit from '../components/EveryVisit.astro';
+
+const services = [
+  {
+    title: 'Weekly or every-other-week mowing',
+    text: 'March through November. Mowed at the right height for your grass, edged, trimmed and blown off every time.',
+    when: 'March to November',
+  },
+  {
+    title: 'Fertilizer and weed control',
+    text: 'Five visits a year, timed for your grass type. Crabgrass preventer in late winter, weed control in spring, and feeding when your lawn can use it.',
+    when: 'Five visits a year',
+  },
+  {
+    title: 'Aeration and overseeding',
+    text: 'We pull plugs of soil so water and air reach the roots, then spread new seed. For fescue, it\'s the most important thing you can do all year.',
+    when: 'September and October',
+  },
+  {
+    title: 'Leaf cleanup',
+    text: 'Leaves blown out of beds, off the lawn and hauled away, not just piled at the curb. One cleanup or a visit every two weeks until the trees are bare.',
+    when: 'November and December',
+  },
+  {
+    title: 'Hedges and shrubs',
+    text: 'Shaped twice a year. Crepe myrtles trimmed the right way, never cut down to stumps.',
+    when: 'Spring and late summer',
+  },
+  {
+    title: 'Pine straw and mulch',
+    text: 'Fresh pine straw or hardwood mulch, tucked in neatly along the edges of your beds.',
+    when: 'Late winter and spring',
+  },
+];
+---
+
+<Base
+  title="Lawn Care Services | Larkmeadow Lawn Care, Raleigh"
+  description="Mowing, fertilizer and weed control, aeration and overseeding, leaf cleanup, hedge trimming and pine straw in Raleigh and the Triangle."
+>
+  <section class="wrap page-head">
+    <h1>Everything your yard needs, all year</h1>
+    <p class="lede">
+      Most customers start with mowing and add the rest as they go. Every service is quoted up
+      front, and none of them needs a contract.
+    </p>
+  </section>
+
+  <section class="band" style="padding-top:0">
+    <div class="wrap">
+      <ul class="services">
+        {
+          services.map((s) => (
+            <li>
+              <p class="services__when">{s.when}</p>
+              <h2>{s.title}</h2>
+              <p>{s.text}</p>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <section class="band band--white">
+    <div class="wrap">
+      <h2 class="head">On every mowing visit</h2>
+      <EveryVisit />
+    </div>
+  </section>
+
+  <section class="band">
+    <div class="wrap">
+      <div class="head">
+        <h2>The lawn calendar</h2>
+        <p class="lede" style="margin:1rem 0 0">Pick a month to see what's on the schedule.</p>
+      </div>
+      <YearCalendar />
+    </div>
+  </section>
+</Base>
+
+<style>
+  .services {
+    display: grid;
+    gap: 1.25rem;
+  }
+
+  @media (min-width: 48rem) {
+    .services {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  @media (min-width: 66rem) {
+    .services {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  /* A strip of mowed stripes across the top of each card. */
+  .services li {
+    padding: 2.25rem 1.6rem 1.6rem;
+    border-radius: var(--radius);
+    background:
+      repeating-linear-gradient(100deg, var(--grass) 0 26px, var(--grass-2) 26px 52px) top / 100% 12px no-repeat,
+      var(--white);
+  }
+
+  .services h2 {
+    margin-bottom: 0.65rem;
+    font-size: 1.55rem;
+    line-height: 1.05;
+  }
+
+  .services p:last-child {
+    margin: 0;
+  }
+
+  .services__when {
+    margin: 0 0 0.5rem;
+    font-size: 0.92rem;
+    font-weight: 700;
+    color: var(--grass);
+  }
+
+  .head {
+    margin-bottom: clamp(1.75rem, 4vw, 2.5rem);
+  }
+</style>

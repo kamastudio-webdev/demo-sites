@@ -1,0 +1,78 @@
+---
+// The mark is a spur rowel (the little star wheel on a spur) inside a tire.
+import { site } from '../site';
+
+interface Props {
+  tone?: 'dark' | 'light';
+}
+const { tone = 'dark' } = Astro.props;
+
+const points: string[] = [];
+for (let i = 0; i < 16; i++) {
+  const r = i % 2 === 0 ? 15 : 7.5;
+  const a = ((i * 22.5 - 90) * Math.PI) / 180;
+  points.push(`${(r * Math.cos(a)).toFixed(2)},${(r * Math.sin(a)).toFixed(2)}`);
+}
+---
+
+<span class:list={['logo', `logo--${tone}`]}>
+  <svg class="logo__mark" viewBox="-24 -24 48 48" width="46" height="46" aria-hidden="true">
+    <circle r="21" fill="none" stroke="currentColor" stroke-width="5"></circle>
+    <polygon points={points.join(' ')} fill="currentColor"></polygon>
+    <circle class="logo__hole" r="3"></circle>
+  </svg>
+  <span class="logo__words">
+    <span class="logo__name">{site.short}</span>
+    <span class="logo__kind">{site.kind}</span>
+  </span>
+</span>
+
+<style>
+  .logo {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.7rem;
+    line-height: 1;
+  }
+
+  .logo__mark {
+    flex: none;
+    color: var(--oak);
+  }
+
+  .logo__hole {
+    fill: var(--concrete);
+  }
+
+  .logo__words {
+    display: grid;
+    gap: 0.28rem;
+  }
+
+  .logo__name {
+    font-variation-settings: 'wdth' 125;
+    font-weight: 800;
+    font-size: 1.5rem;
+    letter-spacing: -0.02em;
+  }
+
+  .logo__kind {
+    font-variation-settings: 'wdth' 112;
+    font-weight: 600;
+    font-size: 0.8rem;
+    letter-spacing: 0.02em;
+    color: var(--muted);
+  }
+
+  .logo--light .logo__mark {
+    color: var(--crayon);
+  }
+
+  .logo--light .logo__hole {
+    fill: var(--rubber);
+  }
+
+  .logo--light .logo__kind {
+    color: rgb(255 255 255 / 0.72);
+  }
+</style>

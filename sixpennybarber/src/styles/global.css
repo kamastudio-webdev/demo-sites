@@ -1,0 +1,271 @@
+/* Sixpenny Barber Shop
+   The colors of an old barbershop: mint-green walls, oxblood leather chairs,
+   black and white floor tile, chrome, and gold-leaf lettering on the window. */
+
+:root {
+  --mint: #cfe6da;
+  --mint-deep: #a9d2bf;
+  --tile: #f6f6f3;
+  --white: #ffffff;
+  --oxblood: #5c1c24;
+  --oxblood-deep: #44141a;
+  --ink: #23201f;
+  --gold: #d8b469;
+  --chrome: #c5cacc;
+  --pole-red: #b5262f;
+  --pole-blue: #2a4a8c;
+  --muted: #5d5755;
+  --line: #d9d6d1;
+
+  --serif: 'Bodoni Moda Variable', 'Bodoni Moda', 'Didot', 'Bodoni 72', Georgia, serif;
+  --sans: 'Jost Variable', 'Jost', 'Futura', 'Century Gothic', Arial, sans-serif;
+
+  --banner-bg: var(--oxblood);
+  --banner-ink: #fff;
+  --bar-call-bg: var(--oxblood);
+  --bar-call-ink: #fff;
+  --bar-alt-bg: var(--mint);
+  --bar-alt-ink: var(--ink);
+  --bar-edge: var(--ink);
+
+  --form-border: 1.5px solid #a7a19c;
+  --form-radius: 0;
+  --form-bg: var(--white);
+  --form-ink: var(--ink);
+  --form-muted: #77706c;
+  --form-accent: var(--oxblood);
+  --form-error: #b5262f;
+  --form-status-bg: var(--mint);
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 106.25%;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--tile);
+  color: var(--ink);
+  font-family: var(--sans);
+  font-size: 1.04rem;
+  line-height: 1.6;
+}
+
+img,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+a {
+  color: var(--oxblood);
+  text-underline-offset: 0.2em;
+}
+
+h1,
+h2,
+h3 {
+  margin: 0;
+  font-family: var(--serif);
+  font-weight: 700;
+  line-height: 1.04;
+  letter-spacing: -0.01em;
+  text-wrap: balance;
+}
+
+h1 {
+  font-size: clamp(2.6rem, 6vw, 4.9rem);
+  font-weight: 800;
+}
+
+h2 {
+  font-size: clamp(2rem, 4vw, 3.1rem);
+}
+
+h3 {
+  font-size: 1.4rem;
+  font-weight: 600;
+  line-height: 1.15;
+}
+
+p {
+  margin: 0 0 1em;
+  max-width: 60ch;
+}
+
+ul,
+ol {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+:focus-visible {
+  outline: 3px solid var(--oxblood);
+  outline-offset: 3px;
+}
+
+.skip {
+  position: absolute;
+  left: -999px;
+  top: 0;
+  padding: 0.6rem 1rem;
+  background: var(--ink);
+  color: #fff;
+  z-index: 50;
+}
+
+.skip:focus {
+  left: 0;
+}
+
+.wrap {
+  width: min(100% - 2.5rem, 70rem);
+  margin-inline: auto;
+}
+
+.band {
+  padding-block: clamp(3.5rem, 8vw, 6.25rem);
+}
+
+.band--mint {
+  background: var(--mint);
+}
+
+.band--white {
+  background: var(--white);
+}
+
+.band--oxblood {
+  background: var(--oxblood);
+  color: #fff;
+}
+
+.center {
+  text-align: center;
+}
+
+.center p {
+  margin-inline: auto;
+}
+
+.lede {
+  font-size: 1.2rem;
+  line-height: 1.55;
+  max-width: 50ch;
+}
+
+/* Black and white floor tile, used between sections. */
+.tiles {
+  height: 22px;
+  background:
+    conic-gradient(var(--ink) 25%, var(--white) 0 50%, var(--ink) 0 75%, var(--white) 0) 0 0 / 22px 22px;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.95rem 1.6rem;
+  border: 1.5px solid transparent;
+  border-radius: 0;
+  font: inherit;
+  font-weight: 500;
+  line-height: 1.1;
+  letter-spacing: 0.02em;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.btn--primary {
+  background: var(--oxblood);
+  color: #fff;
+}
+
+.btn--primary:hover {
+  background: var(--oxblood-deep);
+}
+
+.btn--line {
+  border-color: currentColor;
+  background: transparent;
+  color: inherit;
+}
+
+.btn--line:hover {
+  background: rgb(0 0 0 / 0.06);
+}
+
+.btn--gold {
+  background: var(--gold);
+  color: var(--ink);
+}
+
+.btn--gold:hover {
+  background: #e6c67f;
+}
+
+.btn-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.center .btn-row {
+  justify-content: center;
+}
+
+.page-head {
+  padding-block: clamp(3rem, 7vw, 5rem) clamp(2.25rem, 5vw, 3.5rem);
+  text-align: center;
+}
+
+.page-head h1 {
+  font-size: clamp(2.4rem, 5.4vw, 4.2rem);
+  max-width: 18ch;
+  margin-inline: auto;
+}
+
+.page-head .lede {
+  margin: 1.25rem auto 0;
+}
+
+.split {
+  display: grid;
+  gap: clamp(2rem, 5vw, 4.5rem);
+  align-items: start;
+}
+
+@media (min-width: 56rem) {
+  .split {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+/* Monogram circle, used where a photo of the barber would go. */
+.monogram {
+  display: grid;
+  place-items: center;
+  width: 6.5rem;
+  height: 6.5rem;
+  border-radius: 50%;
+  background: var(--mint);
+  border: 2px solid var(--ink);
+  box-shadow: inset 0 0 0 5px var(--white), inset 0 0 0 6.5px var(--ink);
+  font-family: var(--serif);
+  font-weight: 700;
+  font-size: 1.9rem;
+}
+
+@media (max-width: 47.99rem) {
+  body {
+    padding-bottom: 4.25rem;
+  }
+}

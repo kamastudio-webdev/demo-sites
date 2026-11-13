@@ -1,0 +1,23 @@
+---
+import { site } from '../site';
+---
+
+<section class="band band--mint call-band center">
+  <div class="wrap">
+    <h2>Big day coming up?</h2>
+    <p class="lede">
+      Wedding, interview, first day on the job. Book a cut two or three days before, so it has time
+      to settle in. Weddings can book the whole shop on a Saturday morning.
+    </p>
+    <div class="btn-row">
+      <a class="btn btn--primary" href={site.cta.href}>{site.cta.label}</a>
+      <a class="btn btn--line" href={site.phoneHref}>Call {site.phone}</a>
+    </div>
+  </div>
+</section>
+
+<style>
+  .call-band .lede {
+    margin: 1.1rem auto 1.75rem;
+  }
+</style>

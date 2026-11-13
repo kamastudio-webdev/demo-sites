@@ -1,0 +1,183 @@
+---
+// Pick a tire size and see what each number means.
+import { site } from '../site';
+
+const widths = [175, 185, 195, 205, 215, 225, 235, 245, 255, 265, 275, 285];
+const aspects = [40, 45, 50, 55, 60, 65, 70, 75];
+const rims = [14, 15, 16, 17, 18, 19, 20];
+const presets = [
+  { label: 'Compact car', w: 195, a: 65, r: 15 },
+  { label: 'Crossover', w: 225, a: 65, r: 17 },
+  { label: 'Half-ton truck', w: 275, a: 65, r: 18 },
+];
+---
+
+<div class="reader" data-reader>
+  <p class="reader__code" aria-hidden="true">
+    <span data-out="w">225</span><span class="reader__dim">/</span><span data-out="a">65</span><span
+      class="reader__dim">R</span
+    ><span data-out="r">17</span>
+  </p>
+
+  <div class="reader__fields">
+    <label>
+      <span class="reader__label">Width</span>
+      <select data-in="w">
+        {widths.map((v) => <option selected={v === 225}>{v}</option>)}
+      </select>
+      <span class="reader__hint">How wide the tread is, in millimeters.</span>
+    </label>
+    <label>
+      <span class="reader__label">Sidewall</span>
+      <select data-in="a">
+        {aspects.map((v) => <option selected={v === 65}>{v}</option>)}
+      </select>
+      <span class="reader__hint">Sidewall height, as a percent of the width.</span>
+    </label>
+    <label>
+      <span class="reader__label">Wheel</span>
+      <select data-in="r">
+        {rims.map((v) => <option selected={v === 17}>{v}</option>)}
+      </select>
+      <span class="reader__hint">The wheel it fits, in inches.</span>
+    </label>
+  </div>
+
+  <div class="reader__presets">
+    <span>Common sizes:</span>
+    {
+      presets.map((p) => (
+        <button type="button" data-preset={`${p.w},${p.a},${p.r}`}>
+          {p.label}
+        </button>
+      ))
+    }
+  </div>
+
+  <p class="reader__result" aria-live="polite">
+    A <strong data-out="code">225/65R17</strong> tire stands about{' '}
+    <strong><span data-out="dia">28.5</span> inches</strong> tall.
+  </p>
+
+  <a class="btn btn--call" href={site.phoneHref}>
+    Call for a price on&nbsp;<span data-out="code">225/65R17</span>
+  </a>
+</div>
+
+<script>
+  document.querySelectorAll<HTMLElement>('[data-reader]').forEach((root) => {
+    const input = (k: string) => root.querySelector<HTMLSelectElement>(`[data-in="${k}"]`)!;
+    const setAll = (k: string, v: string) =>
+      root.querySelectorAll(`[data-out="${k}"]`).forEach((el) => (el.textContent = v));
+
+    const update = () => {
+      const w = Number(input('w').value);
+      const a = Number(input('a').value);
+      const r = Number(input('r').value);
+      const tall = (w * (a / 100) * 2) / 25.4 + r;
+      setAll('w', String(w));
+      setAll('a', String(a));
+      setAll('r', String(r));
+      setAll('code', `${w}/${a}R${r}`);
+      setAll('dia', tall.toFixed(1));
+    };
+
+    root.querySelectorAll('select').forEach((s) => s.addEventListener('change', update));
+    root.querySelectorAll<HTMLButtonElement>('[data-preset]').forEach((b) =>
+      b.addEventListener('click', () => {
+        const [w, a, r] = b.dataset.preset!.split(',');
+        input('w').value = w;
+        input('a').value = a;
+        input('r').value = r;
+        update();
+      }),
+    );
+  });
+</script>
+
+<style>
+  .reader__code {
+    margin: 0 0 1.5rem;
+    max-width: none;
+    font-variation-settings: 'wdth' 125;
+    font-weight: 800;
+    font-size: clamp(3rem, 11vw, 7.5rem);
+    line-height: 0.9;
+    letter-spacing: -0.03em;
+    color: var(--rubber);
+  }
+
+  .reader__dim {
+    color: var(--alloy);
+  }
+
+  .reader__fields {
+    display: grid;
+    gap: 1.25rem;
+  }
+
+  @media (min-width: 40rem) {
+    .reader__fields {
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+    }
+  }
+
+  .reader label {
+    display: grid;
+    gap: 0.4rem;
+    padding-top: 0.9rem;
+    border-top: 2px solid var(--rubber);
+  }
+
+  .reader__label {
+    font-weight: 700;
+  }
+
+  .reader select {
+    width: 100%;
+    padding: 0.7rem 0.8rem;
+    border: 2px solid var(--rubber);
+    border-radius: 6px;
+    background: #fff;
+    color: var(--rubber);
+    font: inherit;
+    font-weight: 700;
+    font-size: 1.15rem;
+  }
+
+  .reader__hint {
+    font-size: 0.9rem;
+    color: var(--muted);
+  }
+
+  .reader__presets {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem 0.6rem;
+    margin-top: 1.5rem;
+    font-size: 0.95rem;
+  }
+
+  .reader__presets button {
+    padding: 0.4rem 0.8rem;
+    border: 1.5px solid var(--rubber);
+    border-radius: 999px;
+    background: transparent;
+    color: var(--rubber);
+    font: inherit;
+    font-weight: 600;
+    cursor: pointer;
+  }
+
+  .reader__presets button:hover {
+    background: var(--rubber);
+    color: #fff;
+  }
+
+  .reader__result {
+    margin: 1.5rem 0 1.25rem;
+    font-size: 1.1rem;
+  }
+</style>

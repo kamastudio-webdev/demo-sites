@@ -1,0 +1,161 @@
+---
+import Base from '../layouts/Base.astro';
+import Estimator from '../components/Estimator.astro';
+import EveryVisit from '../components/EveryVisit.astro';
+import YearCalendar from '../components/YearCalendar.astro';
+import Reviews from '../components/Reviews.astro';
+import { site } from '../site';
+---
+
+<Base
+  title="Larkmeadow Lawn Care | Lawn Mowing in Raleigh, NC"
+  description="Weekly lawn mowing, fertilizer, aeration and leaf cleanup in Raleigh, Cary, Apex and the Triangle. Same crew, same day every week, with a text before every visit."
+>
+  <section class="hero">
+    <div class="hero__mown" aria-hidden="true"></div>
+    <div class="wrap hero__row">
+      <div class="hero__text">
+        <h1>Mowed on the same day, every week.</h1>
+        <p class="lede">
+          Larkmeadow mows lawns across Raleigh and the Triangle. You get the same crew on the same
+          day, a text the night before, and a photo when we're done.
+        </p>
+        <div class="btn-row">
+          <a class="btn btn--clipping" href={site.phoneHref}>Call or text {site.phone}</a>
+          <a class="btn btn--line" href="/services">What we do</a>
+        </div>
+      </div>
+      <div class="hero__est">
+        <Estimator id="hero" />
+      </div>
+    </div>
+  </section>
+
+  <section class="band band--white">
+    <div class="wrap">
+      <div class="head">
+        <h2>Every visit, every time</h2>
+        <p class="lede">No add-on charge for the parts that make a yard look finished.</p>
+      </div>
+      <EveryVisit />
+    </div>
+  </section>
+
+  <section class="band">
+    <div class="wrap">
+      <div class="head">
+        <h2>A year on a Raleigh lawn</h2>
+        <p class="lede">
+          Most lawns here are tall fescue, which wants different care in each season. Here's what our
+          crews are doing, month by month.
+        </p>
+      </div>
+      <YearCalendar />
+    </div>
+  </section>
+
+  <section class="band band--white">
+    <div class="wrap split">
+      <div>
+        <h2>Where we mow</h2>
+        <p class="lede" style="margin-top:1rem">
+          Our crews work set routes, so each neighborhood gets the same day every week. That's how
+          we keep a schedule you can count on.
+        </p>
+        <a class="btn btn--primary" href={site.cta.href}>Check your street</a>
+      </div>
+      <ul class="chips areas">
+        {site.areas.map((a) => <li>{a}</li>)}
+      </ul>
+    </div>
+  </section>
+
+  <section class="band">
+    <div class="wrap">
+      <div class="head">
+        <h2>What neighbors say</h2>
+      </div>
+      <Reviews />
+    </div>
+  </section>
+</Base>
+
+<style>
+  /* Mowing stripes. On load, the mower makes one pass across the hero. */
+  .hero {
+    position: relative;
+    overflow: hidden;
+    background: #2a6e29;
+    color: #fff;
+  }
+
+  .hero__mown {
+    position: absolute;
+    inset: -10%;
+    background: repeating-linear-gradient(
+      100deg,
+      var(--grass) 0 90px,
+      var(--grass-2) 90px 180px
+    );
+    animation: mow 1.8s cubic-bezier(0.45, 0.05, 0.25, 1) both;
+  }
+
+  @keyframes mow {
+    from {
+      clip-path: inset(0 100% 0 0);
+    }
+    to {
+      clip-path: inset(0 0 0 0);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hero__mown {
+      animation: none;
+    }
+  }
+
+  .hero__row {
+    position: relative;
+    display: grid;
+    gap: 2.5rem;
+    align-items: center;
+    padding-block: clamp(3rem, 7vw, 5.5rem);
+  }
+
+  @media (min-width: 60rem) {
+    .hero__row {
+      grid-template-columns: 7fr 5fr;
+      gap: 4rem;
+    }
+  }
+
+  .hero h1 {
+    max-width: 11ch;
+    text-shadow: 0 2px 18px rgb(10 40 12 / 0.35);
+  }
+
+  .hero .lede {
+    margin: 1.5rem 0 1.9rem;
+    color: #fff;
+    text-shadow: 0 1px 10px rgb(10 40 12 / 0.4);
+  }
+
+  .head {
+    margin-bottom: clamp(1.75rem, 4vw, 2.75rem);
+  }
+
+  .head .lede {
+    margin: 1rem 0 0;
+  }
+
+  .areas {
+    align-content: start;
+  }
+
+  .areas li {
+    padding: 0.65rem 1.2rem;
+    background: var(--page);
+    font-size: 1.1rem;
+  }
+</style>

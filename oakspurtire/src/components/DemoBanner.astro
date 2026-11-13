@@ -1,0 +1,35 @@
+---
+import { site } from '../site';
+const d = site.demo;
+---
+
+<aside class="demo-banner" aria-label="About this demo">
+  <p>
+    <strong>Demo site by {d.studio}.</strong>{' '}
+    {site.name} is a fictional business. Want a site like this? Call {d.contact} at{' '}
+    <a href={d.phoneHref}>{d.phone}</a> or visit{' '}
+    <a href={d.studioUrl}>{d.studioUrl.replace('https://', '')}</a>.
+  </p>
+</aside>
+
+<style>
+  .demo-banner {
+    background: var(--crayon);
+    color: var(--rubber);
+    font-size: 0.86rem;
+    line-height: 1.35;
+  }
+
+  .demo-banner p {
+    width: min(100% - 2rem, 74rem);
+    max-width: none;
+    margin: 0 auto;
+    padding-block: 0.55rem;
+    text-align: center;
+  }
+
+  .demo-banner a {
+    font-weight: 700;
+    white-space: nowrap;
+  }
+</style>

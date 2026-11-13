@@ -1,0 +1,90 @@
+---
+import Base from '../layouts/Base.astro';
+import ContactForm from '../components/ContactForm.astro';
+import MapSketch from '../components/MapSketch.astro';
+import { site } from '../site';
+---
+
+<Base
+  title="Contact | Oakspur Tire & Wheel, Kansas City"
+  description="Call, message or stop by Oakspur Tire & Wheel at 1907 Thornlatch Ave in Kansas City. Open weekdays 7:30 to 6 and Saturdays 8 to 4."
+  callBand={false}
+>
+  <section class="wrap page-head">
+    <h1>Get a price or stop by</h1>
+    <p class="lede">
+      Calling is fastest. If you'd rather write, send your tire size or your vehicle and we'll call
+      back with a price within one business hour.
+    </p>
+  </section>
+
+  <section class="band">
+    <div class="wrap split">
+      <div>
+        <h2>Send a message</h2>
+        <div style="margin-top:1.5rem">
+          <ContactForm />
+        </div>
+      </div>
+
+      <div class="visit">
+        <h2>Visit the shop</h2>
+        <p class="visit__phone">
+          <a href={site.phoneHref}>{site.phone}</a>
+        </p>
+        <p>
+          {site.address.street}<br />
+          {site.address.cityLine}
+        </p>
+        <dl class="visit__hours">
+          {
+            site.hours.map((h) => (
+              <>
+                <dt>{h.days}</dt>
+                <dd>{h.time}</dd>
+              </>
+            ))
+          }
+        </dl>
+        <p>Walk-ins are welcome until an hour before closing. No appointment needed for flats.</p>
+        <MapSketch />
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .visit__phone {
+    margin: 1.25rem 0 1rem;
+    font-variation-settings: 'wdth' 125;
+    font-weight: 800;
+    font-size: clamp(1.7rem, 3.2vw, 2.3rem);
+    line-height: 1.1;
+  }
+
+  .visit__phone a {
+    color: var(--oak);
+  }
+
+  .visit__hours {
+    display: grid;
+    grid-template-columns: auto auto;
+    justify-content: start;
+    gap: 0.25rem 1.5rem;
+    margin: 0 0 1.25rem;
+    padding-block: 1rem;
+    border-block: 1px solid var(--rule);
+  }
+
+  .visit__hours dt {
+    font-weight: 700;
+  }
+
+  .visit__hours dd {
+    margin: 0;
+  }
+
+  .visit :global(.map) {
+    margin-top: 1.5rem;
+  }
+</style>

@@ -1,0 +1,134 @@
+---
+import Logo from './Logo.astro';
+import { site } from '../site';
+
+const here = Astro.url.pathname.replace(/\/$/, '') || '/';
+---
+
+<header class="site-head">
+  <div class="wrap site-head__row">
+    <a class="site-head__logo" href="/" aria-label={`${site.name}, home`}>
+      <Logo />
+    </a>
+
+    <button class="menu-btn" type="button" aria-expanded="false" aria-controls="site-nav">Menu</button>
+
+    <nav id="site-nav" class="site-nav" aria-label="Main">
+      <ul>
+        {
+          site.nav.map((item) => (
+            <li>
+              <a href={item.href} aria-current={here === item.href ? 'page' : undefined}>
+                {item.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+
+    <a class="btn btn--primary site-head__cta" href={site.cta.href}>{site.cta.label}</a>
+  </div>
+</header>
+
+<script>
+  const btn = document.querySelector<HTMLButtonElement>('.menu-btn');
+  const nav = document.getElementById('site-nav');
+  btn?.addEventListener('click', () => {
+    const open = btn.getAttribute('aria-expanded') === 'true';
+    btn.setAttribute('aria-expanded', String(!open));
+    nav?.classList.toggle('is-open', !open);
+  });
+</script>
+
+<style>
+  .site-head {
+    background: var(--white);
+  }
+
+  .site-head__row {
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+    padding-block: 0.85rem;
+  }
+
+  .site-head__logo {
+    margin-right: auto;
+    text-decoration: none;
+  }
+
+  /* The menu sits in one rounded pill, with the current page filled in. */
+  .site-nav ul {
+    display: flex;
+    gap: 0.25rem;
+    padding: 0.3rem;
+    border-radius: 999px;
+    background: var(--page);
+  }
+
+  .site-nav a {
+    display: block;
+    padding: 0.5rem 1rem;
+    border-radius: 999px;
+    color: var(--ink);
+    font-weight: 600;
+    text-decoration: none;
+  }
+
+  .site-nav a:hover {
+    background: var(--white);
+  }
+
+  .site-nav a[aria-current='page'] {
+    background: var(--deep);
+    color: #fff;
+  }
+
+  .menu-btn {
+    display: none;
+    padding: 0.6rem 1.1rem;
+    border: 0;
+    border-radius: 999px;
+    background: var(--page);
+    color: var(--ink);
+    font: inherit;
+    font-weight: 700;
+    cursor: pointer;
+  }
+
+  @media (max-width: 61.99rem) {
+    .site-head__cta {
+      display: none;
+    }
+  }
+
+  @media (max-width: 47.99rem) {
+    .site-head__row {
+      flex-wrap: wrap;
+      gap: 0.75rem;
+    }
+
+    .menu-btn {
+      display: block;
+    }
+
+    .site-nav {
+      display: none;
+      flex-basis: 100%;
+    }
+
+    .site-nav.is-open {
+      display: block;
+    }
+
+    .site-nav ul {
+      flex-direction: column;
+      border-radius: 16px;
+    }
+
+    .site-nav a {
+      padding: 0.8rem 1rem;
+    }
+  }
+</style>

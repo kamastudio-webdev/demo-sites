@@ -1,0 +1,122 @@
+---
+// A drawn tire and wheel. The size is molded into the sidewall and the
+// price is written on in yellow crayon, the way the shop marks its tires.
+interface Props {
+  size?: string;
+  note?: string;
+}
+const { size = '225/65R17', note = '$129 ea. installed' } = Astro.props;
+
+const spokes = [0, 72, 144, 216, 288];
+const lugs = spokes.map((deg) => {
+  const a = ((deg - 54) * Math.PI) / 180;
+  return { x: (44 * Math.cos(a)).toFixed(1), y: (44 * Math.sin(a)).toFixed(1) };
+});
+---
+
+<svg
+  class="tire"
+  viewBox="-500 -500 1000 1000"
+  role="img"
+  aria-label={`A ${size} tire with ${note} written on the sidewall in yellow crayon`}
+>
+  <defs>
+    <path id="sidewall-outer" d="M -360 0 A 360 360 0 1 1 360 0 A 360 360 0 1 1 -360 0"></path>
+    <path id="sidewall-inner" d="M -306 0 A 306 306 0 1 1 306 0 A 306 306 0 1 1 -306 0"></path>
+  </defs>
+
+  <g class="tire__roll">
+    <!-- tread -->
+    <circle r="494" fill="#1b1e1d"></circle>
+    <circle r="476" fill="none" stroke="#2e3331" stroke-width="30" stroke-dasharray="23 9"></circle>
+    <circle
+      r="448"
+      fill="none"
+      stroke="#282c2a"
+      stroke-width="14"
+      stroke-dasharray="36 7"
+      stroke-dashoffset="14"></circle>
+
+    <!-- sidewall -->
+    <circle r="434" fill="#202423"></circle>
+    <circle r="428" fill="none" stroke="#353a38" stroke-width="2"></circle>
+    <circle r="296" fill="none" stroke="#353a38" stroke-width="2"></circle>
+
+    <text class="tire__molded" textLength="2190" lengthAdjust="spacing">
+      <textPath href="#sidewall-outer" startOffset="30">
+        OAKSPUR TIRE &amp; WHEEL
+        <tspan class="tire__size">&#160;&#160;{size}&#160;&#160;</tspan>
+        102H&#160;&#160;M+S&#160;&#160;KANSAS CITY MO&#160;&#160;
+        <tspan class="tire__size">{size}</tspan>
+      </textPath>
+    </text>
+
+    <text class="tire__crayon">
+      <textPath href="#sidewall-inner" startOffset="70">{note}</textPath>
+    </text>
+
+    <!-- wheel -->
+    <circle r="286" fill="#aab0ad"></circle>
+    <circle r="268" fill="#111312"></circle>
+    {
+      spokes.map((deg) => (
+        <g transform={`rotate(${deg})`}>
+          <rect x="-31" y="-270" width="62" height="236" rx="10" fill="#c3c8c5" />
+          <rect x="-31" y="-270" width="20" height="236" rx="10" fill="#d8dcd9" />
+        </g>
+      ))
+    }
+    <circle r="268" fill="none" stroke="#c3c8c5" stroke-width="12"></circle>
+    <circle r="72" fill="#c3c8c5"></circle>
+    {lugs.map((p) => <circle cx={p.x} cy={p.y} r="8" fill="#2a2e2c" />)}
+    <circle r="24" fill="#17442f"></circle>
+    <circle r="8" fill="#f5c518"></circle>
+  </g>
+</svg>
+
+<style>
+  .tire {
+    width: 100%;
+    height: auto;
+    overflow: visible;
+  }
+
+  .tire__molded {
+    font-family: var(--sans);
+    font-variation-settings: 'wdth' 125;
+    font-weight: 800;
+    font-size: 44px;
+    fill: #555c59;
+  }
+
+  .tire__size {
+    fill: #d9ddda;
+  }
+
+  .tire__crayon {
+    font-family: var(--marker);
+    font-size: 43px;
+    fill: var(--crayon);
+  }
+
+  /* The one moving thing on the site: the tire rolls into place once. */
+  .tire__roll {
+    transform: rotate(24deg);
+    animation: roll-in 1.5s cubic-bezier(0.2, 0.75, 0.2, 1) both;
+  }
+
+  @keyframes roll-in {
+    from {
+      transform: rotate(-60deg);
+    }
+    to {
+      transform: rotate(24deg);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .tire__roll {
+      animation: none;
+    }
+  }
+</style>

@@ -1,0 +1,111 @@
+---
+import Base from '../layouts/Base.astro';
+import ContactForm from '../components/ContactForm.astro';
+import MapSketch from '../components/MapSketch.astro';
+import { site } from '../site';
+---
+
+<Base
+  title="Visit | Sixpenny Barber Shop, Denver"
+  description="Find Sixpenny Barber Shop at 1546 Brasswick St in Capitol Hill, Denver. Open Tuesday to Sunday."
+>
+  <section class="wrap page-head">
+    <h1>Come by the shop</h1>
+    <p class="lede">
+      Look for the barber pole on Brasswick Street, a block off the bus line. Walk-ins are welcome
+      whenever a chair is free.
+    </p>
+  </section>
+
+  <section class="band" style="padding-top:0">
+    <div class="wrap split">
+      <div>
+        <p class="visit__phone"><a href={site.phoneHref}>{site.phone}</a></p>
+        <p class="visit__addr">
+          {site.address.street}<br />
+          {site.address.cityLine}
+        </p>
+        <dl class="visit__hours">
+          {
+            site.hours.map((h) => (
+              <>
+                <dt>{h.days}</dt>
+                <dd>{h.time}</dd>
+              </>
+            ))
+          }
+        </dl>
+        <MapSketch />
+      </div>
+
+      <div class="visit__form">
+        <h2>Send a message</h2>
+        <p>Questions about a cut, a group booking or a gift card? We'll write back the same day.</p>
+        <ContactForm
+          submitLabel="Send message"
+          missing="Add your name and a phone number or email so we can reply."
+          thanks="This is a demo, so nothing was sent. On a real site, this message lands in the shop's inbox."
+          fields={[
+            { id: 'name', label: 'Your name', required: true, autocomplete: 'name' },
+            { id: 'phone', label: 'Phone or email', required: true, autocomplete: 'email' },
+            {
+              id: 'topic',
+              label: 'What is it about?',
+              type: 'select',
+              options: ['A question about a cut', 'A wedding or group booking', 'A gift card', 'Something else'],
+            },
+            { id: 'message', label: 'Message', type: 'textarea', rows: 5 },
+          ]}
+        />
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .visit__phone {
+    margin: 0 0 0.75rem;
+    font-family: var(--serif);
+    font-weight: 700;
+    font-size: clamp(2rem, 4vw, 2.75rem);
+    line-height: 1;
+  }
+
+  .visit__phone a {
+    color: var(--oxblood);
+    text-decoration: none;
+  }
+
+  .visit__addr {
+    font-size: 1.15rem;
+  }
+
+  .visit__hours {
+    display: grid;
+    grid-template-columns: auto auto;
+    justify-content: start;
+    gap: 0.25rem 1.75rem;
+    margin: 0 0 1.75rem;
+    padding: 1rem 0;
+    border-block: 3px double var(--ink);
+  }
+
+  .visit__hours dt {
+    font-weight: 500;
+  }
+
+  .visit__hours dd {
+    margin: 0;
+  }
+
+  .visit__form {
+    padding: clamp(1.4rem, 3vw, 2.25rem);
+    background: var(--white);
+    border: 1.5px solid var(--ink);
+  }
+
+  .visit__form h2 {
+    margin-bottom: 0.6rem;
+    font-size: clamp(1.7rem, 3vw, 2.2rem);
+  }
+</style>

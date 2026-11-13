@@ -1,0 +1,264 @@
+/* Tallybrook Tax Service
+   Looks like a well-kept tax form: cool white paper, navy ink, pale blue
+   form rules and boxes, and one red rubber stamp. */
+
+:root {
+  --paper: #f8f9fb;
+  --white: #ffffff;
+  --box: #eaeff7;
+  --ink: #1c2740;
+  --ledger: #274b8a;
+  --ledger-deep: #1b3769;
+  --rule: #c3cee0;
+  --stamp: #b3261e;
+  --muted: #4f5b73;
+
+  --slab: 'Zilla Slab', Rockwell, 'Roboto Slab', Georgia, serif;
+  --sans: 'IBM Plex Sans', 'Segoe UI', Roboto, Arial, sans-serif;
+
+  --banner-bg: var(--ledger);
+  --banner-ink: #fff;
+  --bar-call-bg: var(--ledger);
+  --bar-call-ink: #fff;
+  --bar-alt-bg: var(--white);
+  --bar-alt-ink: var(--ink);
+  --bar-edge: var(--ink);
+
+  --form-border: 1.5px solid #8b97ae;
+  --form-radius: 3px;
+  --form-bg: var(--white);
+  --form-ink: var(--ink);
+  --form-muted: #66718a;
+  --form-accent: var(--ledger);
+  --form-error: var(--stamp);
+  --form-status-bg: var(--box);
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 106.25%;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--sans);
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+img,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+a {
+  color: var(--ledger);
+  text-underline-offset: 0.18em;
+}
+
+h1,
+h2,
+h3 {
+  margin: 0;
+  font-family: var(--slab);
+  font-weight: 700;
+  line-height: 1.08;
+  letter-spacing: -0.01em;
+  text-wrap: balance;
+}
+
+h1 {
+  font-size: clamp(2.4rem, 5.4vw, 4.3rem);
+}
+
+h2 {
+  font-size: clamp(1.75rem, 3.2vw, 2.6rem);
+}
+
+h3 {
+  font-size: 1.3rem;
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+p {
+  margin: 0 0 1em;
+  max-width: 64ch;
+}
+
+ul,
+ol {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+:focus-visible {
+  outline: 3px solid var(--ledger);
+  outline-offset: 3px;
+}
+
+.skip {
+  position: absolute;
+  left: -999px;
+  top: 0;
+  padding: 0.6rem 1rem;
+  background: var(--ink);
+  color: #fff;
+  z-index: 50;
+}
+
+.skip:focus {
+  left: 0;
+}
+
+.wrap {
+  width: min(100% - 2.5rem, 72rem);
+  margin-inline: auto;
+}
+
+.band {
+  padding-block: clamp(3.25rem, 7vw, 5.75rem);
+}
+
+.band--white {
+  background: var(--white);
+  border-block: 1px solid var(--rule);
+}
+
+.band--ink {
+  background: var(--ink);
+  color: #fff;
+}
+
+.band--ink a {
+  color: #fff;
+}
+
+.lede {
+  font-size: 1.18rem;
+  line-height: 1.55;
+  max-width: 54ch;
+}
+
+.split {
+  display: grid;
+  gap: clamp(2rem, 5vw, 4.5rem);
+  align-items: start;
+}
+
+@media (min-width: 56rem) {
+  .split {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .split--narrow-left {
+    grid-template-columns: 4fr 7fr;
+  }
+}
+
+.stack > * + * {
+  margin-top: 1rem;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.85rem 1.35rem;
+  border: 2px solid transparent;
+  border-radius: 3px;
+  font: inherit;
+  font-weight: 600;
+  line-height: 1.1;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.btn--primary {
+  background: var(--ledger);
+  color: #fff;
+}
+
+.btn--primary:hover {
+  background: var(--ledger-deep);
+}
+
+.btn--line {
+  border-color: var(--ledger);
+  background: transparent;
+  color: var(--ledger);
+}
+
+.btn--line:hover {
+  background: var(--box);
+}
+
+.btn-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.page-head {
+  padding-block: clamp(2.75rem, 6vw, 4.5rem) clamp(2rem, 4vw, 3rem);
+}
+
+.page-head h1 {
+  font-size: clamp(2.2rem, 4.6vw, 3.6rem);
+  max-width: 20ch;
+}
+
+.page-head .lede {
+  margin-top: 1.1rem;
+  margin-bottom: 0;
+}
+
+/* A list with rules between items */
+.ruled > li {
+  padding-block: 1.3rem;
+  border-top: 1px solid var(--rule);
+}
+
+.ruled > li:last-child {
+  border-bottom: 1px solid var(--rule);
+}
+
+.ruled h3 {
+  margin-bottom: 0.35rem;
+}
+
+.ruled p:last-child {
+  margin-bottom: 0;
+}
+
+@media (max-width: 47.99rem) {
+  body {
+    padding-bottom: 4.25rem;
+  }
+}
+
+@media print {
+  .demo-banner,
+  .site-head,
+  .site-foot,
+  .call-bar,
+  .call-band,
+  .no-print {
+    display: none !important;
+  }
+
+  body {
+    background: #fff;
+    padding: 0;
+  }
+}

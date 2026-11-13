@@ -1,0 +1,17 @@
+{
+  "name": "oakspurtire",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Demo website by KamaStudio: Oakspur Tire & Wheel (a fictional tire shop).",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview"
+  },
+  "dependencies": {
+    "@fontsource-variable/archivo": "^5.2.8",
+    "@fontsource/permanent-marker": "^5.2.8",
+    "astro": "^7.4.12"
+  }
+}

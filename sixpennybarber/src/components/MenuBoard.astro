@@ -1,0 +1,82 @@
+---
+// The price list, lettered like the gold leaf on the shop window.
+import { services } from '../shop';
+
+interface Props {
+  limit?: number;
+}
+const { limit } = Astro.props;
+const rows = limit ? services.slice(0, limit) : services;
+---
+
+<div class="board">
+  <ul>
+    {
+      rows.map((s) => (
+        <li>
+          <p class="board__line">
+            <span class="board__name">{s.name}</span>
+            <span class="board__dots" aria-hidden="true" />
+            <span class="board__price">${s.price}</span>
+          </p>
+          <p class="board__note">
+            {s.note}. {s.minutes} minutes.
+          </p>
+        </li>
+      ))
+    }
+  </ul>
+</div>
+
+<style>
+  .board {
+    padding: clamp(1.5rem, 4vw, 2.75rem);
+    background: var(--oxblood);
+    color: #fff;
+    outline: 1.5px solid var(--gold);
+    outline-offset: -10px;
+  }
+
+  .board ul {
+    display: grid;
+    gap: 1.35rem;
+  }
+
+  @media (min-width: 56rem) {
+    .board ul {
+      grid-template-columns: 1fr 1fr;
+      column-gap: 3.5rem;
+    }
+  }
+
+  .board__line {
+    display: flex;
+    align-items: baseline;
+    gap: 0.6rem;
+    max-width: none;
+    margin: 0 0 0.2rem;
+  }
+
+  .board__name,
+  .board__price {
+    font-family: var(--serif);
+    font-weight: 700;
+    font-size: clamp(1.3rem, 3.6vw, 1.5rem);
+    line-height: 1.1;
+    color: var(--gold);
+  }
+
+  .board__dots {
+    flex: 1;
+    min-width: 1.5rem;
+    border-bottom: 2px dotted rgb(216 180 105 / 0.55);
+    transform: translateY(-0.3rem);
+  }
+
+  .board__note {
+    margin: 0;
+    max-width: 40ch;
+    font-size: 0.95rem;
+    color: rgb(255 255 255 / 0.8);
+  }
+</style>

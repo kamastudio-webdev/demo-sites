@@ -1,0 +1,137 @@
+---
+import Base from '../layouts/Base.astro';
+import ContactForm from '../components/ContactForm.astro';
+import MapSketch from '../components/MapSketch.astro';
+import { site } from '../site';
+const { season, offSeason } = site.hours;
+---
+
+<Base
+  title="Book a Time | Tallybrook Tax Service, Columbus"
+  description="Book a tax appointment at Tallybrook Tax Service, 2280 Wexlow Rd in Columbus. Evening and Saturday appointments during tax season."
+  callBand={false}
+>
+  <section class="wrap page-head">
+    <h1>Book a time</h1>
+    <p class="lede">
+      Send a message and we'll call you back the same business day to set up a time. During tax
+      season, the first open evening is usually within a week.
+    </p>
+  </section>
+
+  <section class="band" style="padding-top:0">
+    <div class="wrap split">
+      <div class="panel">
+        <ContactForm
+          submitLabel="Ask for an appointment"
+          missing="Add your name and phone number so we can call you to set a time."
+          thanks="This is a demo, so nothing was sent. On a real site, this request lands in the office inbox."
+          fields={[
+            { id: 'name', label: 'Your name', required: true, autocomplete: 'name' },
+            { id: 'phone', label: 'Phone number', type: 'tel', required: true, autocomplete: 'tel' },
+            { id: 'email', label: 'Email', type: 'email', autocomplete: 'email' },
+            {
+              id: 'kind',
+              label: 'What do you need?',
+              type: 'select',
+              options: [
+                'A personal return',
+                'A return with self-employment or gig work',
+                'A return with rental property',
+                'A prior-year or amended return',
+                'Help with an IRS or state letter',
+                'Something else',
+              ],
+            },
+            {
+              id: 'when',
+              label: 'Best time for an appointment',
+              type: 'select',
+              options: ['Weekday daytime', 'Weekday evening', 'Saturday', 'Drop-off, no appointment'],
+            },
+            { id: 'message', label: 'Anything we should know?', type: 'textarea', rows: 4 },
+          ]}
+        />
+      </div>
+
+      <div class="visit">
+        <h2>The office</h2>
+        <p class="visit__phone">
+          <a href={site.phoneHref}>{site.phone}</a>
+        </p>
+        <p>
+          {site.address.street}<br />
+          {site.address.cityLine}
+        </p>
+        {
+          [season, offSeason].map((block) => (
+            <div class="visit__hours">
+              <h3>{block.label}</h3>
+              <dl>
+                {block.rows.map((r) => (
+                  <>
+                    <dt>{r.days}</dt>
+                    <dd>{r.time}</dd>
+                  </>
+                ))}
+              </dl>
+            </div>
+          ))
+        }
+        <p>Free parking in front. The office is on the ground floor, with no steps.</p>
+        <MapSketch />
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .panel {
+    padding: clamp(1.25rem, 3vw, 2rem);
+    background: var(--white);
+    border: 1.5px solid var(--ink);
+  }
+
+  .visit__phone {
+    margin: 1rem 0 0.75rem;
+    font-family: var(--slab);
+    font-weight: 700;
+    font-size: clamp(1.7rem, 3.2vw, 2.3rem);
+    line-height: 1.1;
+  }
+
+  .visit__phone a {
+    text-decoration: none;
+  }
+
+  .visit__hours {
+    margin-bottom: 1rem;
+    padding: 0.9rem 0 0.4rem;
+    border-top: 1px solid var(--rule);
+  }
+
+  .visit__hours h3 {
+    margin-bottom: 0.4rem;
+    font-size: 1.1rem;
+  }
+
+  .visit__hours dl {
+    display: grid;
+    grid-template-columns: auto auto;
+    justify-content: start;
+    gap: 0.2rem 1.5rem;
+    margin: 0;
+  }
+
+  .visit__hours dt {
+    font-weight: 600;
+  }
+
+  .visit__hours dd {
+    margin: 0;
+  }
+
+  .visit :global(.map) {
+    margin-top: 1.5rem;
+  }
+</style>

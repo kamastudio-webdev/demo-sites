@@ -1,0 +1,64 @@
+---
+import { barbers } from '../shop';
+---
+
+<ul class="barbers">
+  {
+    barbers.map((b) => (
+      <li>
+        <span class="monogram" aria-hidden="true">
+          {b.initials}
+        </span>
+        <h3>{b.name}</h3>
+        <p class="barbers__role">{b.role}</p>
+        <p>
+          <strong>Ask for:</strong> {b.good}
+        </p>
+        <a class="barbers__book" href={`/book?barber=${b.id}`}>
+          Book with {b.name.split(' ')[0]}
+        </a>
+      </li>
+    ))
+  }
+</ul>
+
+<style>
+  .barbers {
+    display: grid;
+    gap: 2.75rem;
+    text-align: center;
+  }
+
+  @media (min-width: 56rem) {
+    .barbers {
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2rem;
+    }
+  }
+
+  .barbers li {
+    display: grid;
+    justify-items: center;
+  }
+
+  .barbers .monogram {
+    margin-bottom: 1.1rem;
+  }
+
+  .barbers h3 {
+    font-size: 1.65rem;
+  }
+
+  .barbers__role {
+    margin: 0.35rem 0 0.75rem;
+    color: var(--muted);
+  }
+
+  .barbers p {
+    max-width: 30ch;
+  }
+
+  .barbers__book {
+    font-weight: 500;
+  }
+</style>

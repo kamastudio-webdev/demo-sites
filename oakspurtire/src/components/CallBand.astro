@@ -1,0 +1,45 @@
+---
+import { site } from '../site';
+---
+
+<section class="band band--oak call-band">
+  <div class="wrap call-band__row">
+    <div>
+      <h2>Flat tire right now?</h2>
+      <p>
+        Call and tell us what happened. We'll say whether it's safe to drive in and how soon we can
+        get you on the lift. Most flats are fixed in about 30 minutes.
+      </p>
+    </div>
+    <div class="btn-row">
+      <a class="btn btn--crayon" href={site.phoneHref}>Call {site.phone}</a>
+      <a class="btn btn--line" href="/contact">Send a message</a>
+    </div>
+  </div>
+</section>
+
+<style>
+  .call-band__row {
+    display: grid;
+    gap: 1.75rem;
+    align-items: center;
+  }
+
+  .call-band p {
+    margin: 1rem 0 0;
+    max-width: 52ch;
+    color: rgb(255 255 255 / 0.88);
+  }
+
+  .call-band .btn--line:hover {
+    background: #fff;
+    border-color: #fff;
+    color: var(--oak-deep);
+  }
+
+  @media (min-width: 56rem) {
+    .call-band__row {
+      grid-template-columns: 1fr auto;
+    }
+  }
+</style>

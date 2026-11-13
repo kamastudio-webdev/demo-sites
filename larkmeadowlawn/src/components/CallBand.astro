@@ -1,0 +1,45 @@
+---
+import { site } from '../site';
+---
+
+<section class="band band--sky call-band">
+  <div class="wrap">
+    <div class="call-band__panel">
+      <div>
+        <h2>Grass getting away from you?</h2>
+        <p>
+          Text us your address. We'll look at the yard from the street and send a price the same
+          day, usually within a couple of hours.
+        </p>
+      </div>
+      <div class="btn-row">
+        <a class="btn btn--clipping" href={site.phoneHref}>Call or text {site.phone}</a>
+        <a class="btn btn--line" href={site.cta.href}>Get a free quote</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .call-band__panel {
+    display: grid;
+    gap: 1.75rem;
+    align-items: center;
+    padding: clamp(1.75rem, 4vw, 3rem);
+    border-radius: 28px;
+    background: var(--deep);
+    color: #fff;
+  }
+
+  .call-band p {
+    margin: 1rem 0 0;
+    max-width: 50ch;
+    color: rgb(255 255 255 / 0.86);
+  }
+
+  @media (min-width: 56rem) {
+    .call-band__panel {
+      grid-template-columns: 1fr auto;
+    }
+  }
+</style>

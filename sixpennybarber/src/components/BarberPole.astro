@@ -1,0 +1,98 @@
+---
+// A barber pole. The stripes turn slowly, like the one outside the door.
+---
+
+<div class="pole" aria-hidden="true">
+  <span class="pole__ball"></span>
+  <span class="pole__cap"></span>
+  <span class="pole__glass"><span class="pole__stripes"></span></span>
+  <span class="pole__cap pole__cap--base"></span>
+  <span class="pole__mount"></span>
+</div>
+
+<style>
+  .pole {
+    display: grid;
+    justify-items: center;
+    width: 7.5rem;
+  }
+
+  .pole__ball {
+    width: 2.4rem;
+    height: 2.4rem;
+    margin-bottom: -0.4rem;
+    border-radius: 50%;
+    background: radial-gradient(circle at 35% 30%, #fff 0 12%, #d9dddf 28%, #8d9497 75%, #6d7477);
+  }
+
+  .pole__cap {
+    width: 6.8rem;
+    height: 2.1rem;
+    border-radius: 0.6rem 0.6rem 0.2rem 0.2rem;
+    background: linear-gradient(90deg, #7b8285, #e9eced 30%, #fdfdfd 42%, #aeb4b7 70%, #6d7477);
+    box-shadow: inset 0 -3px 0 rgb(0 0 0 / 0.18);
+  }
+
+  .pole__cap--base {
+    border-radius: 0.2rem 0.2rem 0.6rem 0.6rem;
+    box-shadow: inset 0 3px 0 rgb(0 0 0 / 0.18);
+  }
+
+  .pole__glass {
+    position: relative;
+    width: 5.6rem;
+    height: clamp(16rem, 34vw, 22rem);
+    overflow: hidden;
+    border-inline: 2px solid #9aa1a4;
+  }
+
+  /* Highlight on the glass */
+  .pole__glass::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      90deg,
+      rgb(0 0 0 / 0.28),
+      rgb(255 255 255 / 0) 22%,
+      rgb(255 255 255 / 0.55) 34%,
+      rgb(255 255 255 / 0) 46%,
+      rgb(0 0 0 / 0.22)
+    );
+  }
+
+  .pole__stripes {
+    position: absolute;
+    inset: -120px 0 0 0;
+    background: repeating-linear-gradient(
+      -35deg,
+      var(--pole-red) 0 22px,
+      #fff 22px 40px,
+      var(--pole-blue) 40px 62px,
+      #fff 62px 80px
+    );
+    background-size: 100% 139.5px;
+    animation: turn 3.5s linear infinite;
+  }
+
+  @keyframes turn {
+    from {
+      transform: translateY(0);
+    }
+    to {
+      transform: translateY(139.5px);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .pole__stripes {
+      animation: none;
+    }
+  }
+
+  .pole__mount {
+    width: 1.2rem;
+    height: 1.6rem;
+    background: linear-gradient(90deg, #6d7477, #d9dddf, #6d7477);
+  }
+</style>

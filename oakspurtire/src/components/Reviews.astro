@@ -1,0 +1,89 @@
+---
+// Made-up reviews, labeled as samples.
+const reviews = [
+  {
+    text: 'Picked up a screw on I-35 on my way to work. They had me patched and back on the road in 25 minutes, and charged exactly what the sign said.',
+    who: 'Marcus W., Midtown',
+  },
+  {
+    text: 'I called three shops for a price on truck tires. Oakspur was the only one that gave me a single number with everything in it. That number was the bill.',
+    who: 'Dana R., Raytown',
+  },
+  {
+    text: "My daughter needed tires on a college budget. They showed her two good used ones with the tread depth written right on them and didn't push the new set.",
+    who: 'Lorraine P., Waldo',
+  },
+];
+---
+
+<ul class="reviews">
+  {
+    reviews.map((r) => (
+      <li>
+        <p class="reviews__tag">Sample review</p>
+        <p class="reviews__stars" aria-label="5 out of 5 stars">
+          ★★★★★
+        </p>
+        <blockquote>
+          <p>{r.text}</p>
+        </blockquote>
+        <p class="reviews__who">{r.who}</p>
+      </li>
+    ))
+  }
+</ul>
+
+<style>
+  .reviews {
+    display: grid;
+    gap: 2rem;
+  }
+
+  @media (min-width: 56rem) {
+    .reviews {
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0;
+    }
+
+    .reviews li {
+      padding-inline: 2rem;
+      border-left: 1px solid var(--rule);
+    }
+
+    .reviews li:first-child {
+      padding-left: 0;
+      border-left: 0;
+    }
+
+    .reviews li:last-child {
+      padding-right: 0;
+    }
+  }
+
+  .reviews__tag {
+    margin: 0 0 0.5rem;
+    font-size: 0.86rem;
+    color: var(--muted);
+  }
+
+  .reviews__stars {
+    margin: 0 0 0.75rem;
+    font-size: 1.15rem;
+    letter-spacing: 0.12em;
+    color: var(--oak);
+  }
+
+  .reviews blockquote {
+    margin: 0;
+  }
+
+  .reviews blockquote p {
+    font-size: 1.08rem;
+    line-height: 1.5;
+  }
+
+  .reviews__who {
+    margin: 0;
+    font-weight: 700;
+  }
+</style>

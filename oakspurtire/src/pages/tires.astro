@@ -1,0 +1,134 @@
+---
+import Base from '../layouts/Base.astro';
+import SizeReader from '../components/SizeReader.astro';
+import WorkOrder from '../components/WorkOrder.astro';
+---
+
+<Base
+  title="Tires | Oakspur Tire & Wheel, Kansas City"
+  description="All-season, truck, winter and used tires in Kansas City, installed the same day. Every price includes mounting, balancing, valve stems and disposal."
+>
+  <section class="wrap page-head">
+    <h1>Tires for how you drive</h1>
+    <p class="lede">
+      We keep the common sizes on the rack and can get most others by the next morning. Tell us what
+      you drive and what you want to spend, and we'll show you two or three that fit.
+    </p>
+  </section>
+
+  <section class="band">
+    <div class="wrap">
+      <ul class="kinds">
+        <li>
+          <h2>All-season</h2>
+          <p>
+            The right tire for most Kansas City cars and crossovers. Quiet on the highway, steady in
+            rain, fine in a light snow.
+          </p>
+          <p class="kinds__fits">Good for commuters and family cars.</p>
+        </li>
+        <li>
+          <h2>Truck and SUV</h2>
+          <p>
+            Highway, all-terrain and load-rated tires for pickups and SUVs. Tell us if you tow or
+            haul and we'll match the load rating.
+          </p>
+          <p class="kinds__fits">Good for work trucks, trailers and gravel roads.</p>
+        </li>
+        <li>
+          <h2>Winter</h2>
+          <p>
+            Softer rubber that grips below 45 degrees. We'll mount a set on spare wheels so the
+            spring and fall swap takes 20 minutes.
+          </p>
+          <p class="kinds__fits">Good for hills, early shifts and rear-wheel drive.</p>
+        </li>
+        <li>
+          <h2>Used</h2>
+          <p>
+            Inspected inside and out, with at least half their tread left. The tread depth and the
+            price are written on every one in yellow crayon.
+          </p>
+          <p class="kinds__fits">Good for a tight budget or matching one damaged tire.</p>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="band band--paper">
+    <div class="wrap split split--wide-right">
+      <div>
+        <h2>Start with your size</h2>
+        <p class="lede" style="margin-top:1rem">
+          It's printed on the sidewall of the tires you have now and on the sticker inside your
+          driver's door.
+        </p>
+        <p>
+          The wrong size can rub, throw off your speedometer or fail to carry the weight of your
+          vehicle. If you're thinking about a different size, call us first.
+        </p>
+      </div>
+      <SizeReader />
+    </div>
+  </section>
+
+  <section class="band">
+    <div class="wrap split">
+      <div>
+        <h2>What a set of four costs</h2>
+        <p class="lede" style="margin-top:1rem">
+          Here's an example for a common crossover size. Your price depends on the tire
+          you pick, but the list of what's included never changes.
+        </p>
+        <ul class="ruled">
+          <li>
+            <h3>Payment</h3>
+            <p>Cash, debit and all major cards. Ask at the counter about paying over six months.</p>
+          </li>
+          <li>
+            <h3>Warranty</h3>
+            <p>
+              New tires carry the maker's tread warranty. We handle the paperwork if you ever need
+              to use it.
+            </p>
+          </li>
+        </ul>
+      </div>
+      <WorkOrder />
+    </div>
+  </section>
+</Base>
+
+<style>
+  .kinds {
+    display: grid;
+    gap: 0;
+  }
+
+  .kinds li {
+    padding-block: 1.75rem;
+    border-top: 2px solid var(--rubber);
+  }
+
+  .kinds h2 {
+    margin-bottom: 0.75rem;
+    font-size: clamp(1.5rem, 2.6vw, 2rem);
+  }
+
+  .kinds p {
+    margin-bottom: 0.6rem;
+  }
+
+  .kinds__fits {
+    margin-bottom: 0 !important;
+    font-weight: 700;
+    color: var(--oak);
+  }
+
+  @media (min-width: 48rem) {
+    .kinds {
+      grid-template-columns: 1fr 1fr;
+      column-gap: clamp(2rem, 5vw, 4.5rem);
+    }
+  }
+</style>

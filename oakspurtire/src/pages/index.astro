@@ -1,0 +1,225 @@
+---
+import Base from '../layouts/Base.astro';
+import Tire from '../components/Tire.astro';
+import SizeReader from '../components/SizeReader.astro';
+import PriceBoard from '../components/PriceBoard.astro';
+import WorkOrder from '../components/WorkOrder.astro';
+import Reviews from '../components/Reviews.astro';
+import { site } from '../site';
+---
+
+<Base
+  title="Oakspur Tire & Wheel | Tire Shop in Kansas City, MO"
+  description="New and used tires, flat repair, balancing and alignments in Kansas City. One out-the-door price with mounting, balancing, valve stems and disposal included."
+>
+  <section class="hero">
+    <div class="wrap hero__row">
+      <div class="hero__text">
+        <h1>New tires on by lunch.</h1>
+        <p class="lede">
+          Oakspur is a family tire shop on Thornlatch Avenue. Tell us your tire size and we'll give
+          you one out-the-door price, with mounting, balancing, valve stems and disposal already in
+          it.
+        </p>
+        <div class="btn-row">
+          <a class="btn btn--call" href={site.phoneHref}>Call {site.phone}</a>
+          <a class="btn btn--line" href="#size">Find your tire size</a>
+        </div>
+        <p class="hero__hours">Open weekdays 7:30 to 6 and Saturdays 8 to 4. Walk-ins welcome.</p>
+      </div>
+      <div class="hero__tire">
+        <Tire />
+      </div>
+    </div>
+  </section>
+
+  <section class="facts" aria-label="Good to know">
+    <ul class="wrap facts__row">
+      <li>
+        <strong>About an hour</strong>
+        for a set of four, start to finish
+      </li>
+      <li>
+        <strong>Free flat repair</strong>
+        on any tire you bought here
+      </li>
+      <li>
+        <strong>New and used</strong>
+        tires for cars, SUVs and light trucks
+      </li>
+    </ul>
+  </section>
+
+  <section class="band band--paper" id="size">
+    <div class="wrap split split--wide-right">
+      <div>
+        <h2>Your size is on the side of your tire</h2>
+        <p class="lede" style="margin-top:1rem">
+          Look for a number that reads like 225/65R17. Set it here to see what each part means, then
+          call us with it. That's all we need to quote you a price.
+        </p>
+        <p>
+          Can't find it? It's also on the sticker inside your driver's door. Or read us the year,
+          make and model and we'll look it up.
+        </p>
+      </div>
+      <SizeReader />
+    </div>
+  </section>
+
+  <section class="band band--rubber">
+    <div class="wrap split">
+      <div>
+        <h2>The prices on our wall</h2>
+        <p class="lede" style="margin-top:1rem">
+          The same board hangs behind the counter. What you read here is what you pay there.
+        </p>
+        <p>
+          Rotations are free for as long as you own tires you bought from us. So are flat repairs.
+        </p>
+        <a class="btn btn--crayon" href="/services" style="margin-top:.5rem">See every service</a>
+      </div>
+      <PriceBoard />
+    </div>
+  </section>
+
+  <section class="band">
+    <div class="wrap split">
+      <WorkOrder />
+      <div>
+        <h2>One price, out the door</h2>
+        <p class="lede" style="margin-top:1rem">
+          A tire price that leaves out the mounting isn't a price. Ours covers the tire and the work
+          to put it on your car.
+        </p>
+        <ul class="ruled">
+          <li>
+            <h3>We quote the whole job</h3>
+            <p>Mounting, balancing, new valve stems and hauling off your old tires are in the number.</p>
+          </li>
+          <li>
+            <h3>We show you before we replace</h3>
+            <p>
+              If two of your tires still have good tread, we'll measure them in front of you and say
+              so.
+            </p>
+          </li>
+          <li>
+            <h3>We call before anything changes</h3>
+            <p>If we find a bent wheel or a bad sensor, you hear about it before we touch it.</p>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="band band--paper">
+    <div class="wrap">
+      <div class="band__head">
+        <h2>What customers say</h2>
+      </div>
+      <Reviews />
+    </div>
+  </section>
+</Base>
+
+<style>
+  .hero {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero__row {
+    display: grid;
+    gap: 2rem;
+    padding-block: clamp(2.5rem, 6vw, 5rem) 0;
+  }
+
+  .hero__text {
+    position: relative;
+    z-index: 1;
+  }
+
+  .hero h1 {
+    max-width: 9ch;
+  }
+
+  .hero .lede {
+    margin: 1.5rem 0 1.75rem;
+  }
+
+  .hero__hours {
+    margin: 1.5rem 0 0;
+    font-size: 0.95rem;
+    color: var(--muted);
+  }
+
+  /* On phones the tire sits under the text, half below the fold of the section. */
+  .hero__tire {
+    width: min(120%, 34rem);
+    margin: 0 auto -42%;
+    justify-self: center;
+  }
+
+  @media (min-width: 56rem) {
+    .hero__row {
+      grid-template-columns: minmax(0, 6fr) minmax(0, 5fr);
+      align-items: center;
+      padding-block: clamp(3.5rem, 7vw, 6rem);
+      min-height: 38rem;
+    }
+
+    .hero__tire {
+      position: absolute;
+      top: 50%;
+      left: 56%;
+      width: clamp(40rem, 62vw, 54rem);
+      margin: 0;
+      transform: translateY(-46%);
+    }
+  }
+
+  .facts {
+    position: relative;
+    background: var(--rubber);
+    color: var(--paper);
+  }
+
+  .facts__row {
+    display: grid;
+  }
+
+  .facts li {
+    padding-block: 1.15rem;
+    border-top: 1px solid rgb(255 255 255 / 0.2);
+    color: rgb(255 255 255 / 0.82);
+  }
+
+  .facts li:first-child {
+    border-top: 0;
+  }
+
+  .facts strong {
+    display: block;
+    font-variation-settings: 'wdth' 112;
+    font-size: 1.15rem;
+    color: var(--crayon);
+  }
+
+  @media (min-width: 56rem) {
+    .facts__row {
+      grid-template-columns: repeat(3, 1fr);
+    }
+
+    .facts li {
+      padding: 1.4rem 2rem;
+      border-top: 0;
+      border-left: 1px solid rgb(255 255 255 / 0.2);
+    }
+
+    .facts li:first-child {
+      padding-left: 0;
+      border-left: 0;
+    }
+  }
+</style>

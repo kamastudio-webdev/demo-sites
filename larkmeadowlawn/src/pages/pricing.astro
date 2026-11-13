@@ -1,0 +1,187 @@
+---
+import Base from '../layouts/Base.astro';
+import Estimator from '../components/Estimator.astro';
+import { sizes, frequencies } from '../lawn';
+
+const biweekly = frequencies.find((f) => f.id === 'biweekly')!.extra;
+const extras = [
+  { what: 'Fertilizer and weed control', price: '$55 a visit', note: 'Five visits a year, on a ¼-acre lawn' },
+  { what: 'Aeration and overseeding', price: 'from $189', note: 'Seed included' },
+  { what: 'Leaf cleanup', price: 'from $150', note: 'Hauled away, not left at the curb' },
+  { what: 'Hedge and shrub trimming', price: 'from $75', note: 'Clippings hauled away' },
+  { what: 'Pine straw', price: '$7.50 a bale', note: 'Spread and tucked' },
+  { what: 'First cut of an overgrown yard', price: 'from $40 extra', note: 'Only if it has gone more than two weeks' },
+];
+---
+
+<Base
+  title="Pricing | Larkmeadow Lawn Care, Raleigh"
+  description="Lawn mowing prices in Raleigh by yard size, plus prices for fertilizer, aeration, leaf cleanup, hedge trimming and pine straw. No contracts."
+>
+  <section class="wrap page-head">
+    <h1>Prices by yard size</h1>
+    <p class="lede">
+      Pick your yard size for a ballpark. We'll confirm the exact price after a quick look at your
+      yard, before the first visit.
+    </p>
+  </section>
+
+  <section class="band" style="padding-top:0">
+    <div class="wrap split split--wide-left">
+      <div class="panel">
+        <h2 class="small-h">Mowing, per visit</h2>
+        <table class="prices">
+          <thead>
+            <tr>
+              <th scope="col">Yard</th>
+              <th scope="col">Weekly</th>
+              <th scope="col">Every other week</th>
+            </tr>
+          </thead>
+          <tbody>
+            {
+              sizes.map((s) => (
+                <tr>
+                  <th scope="row">
+                    <strong>{s.label}</strong>
+                    <span>{s.note}</span>
+                  </th>
+                  <td>${s.perVisit}</td>
+                  <td>${s.perVisit + biweekly}</td>
+                </tr>
+              ))
+            }
+          </tbody>
+        </table>
+        <p class="prices__note">
+          Every other week costs a little more per visit because the grass is taller. Over an acre?
+          Call us for a price.
+        </p>
+      </div>
+      <Estimator id="pricing" />
+    </div>
+  </section>
+
+  <section class="band band--white">
+    <div class="wrap split">
+      <div>
+        <h2>Everything else</h2>
+        <p class="lede" style="margin-top:1rem">
+          Add any of these to your mowing, or book them on their own.
+        </p>
+        <ul class="ruled" style="margin-top:1.5rem">
+          <li>
+            <h3>No contracts</h3>
+            <p>Pause or cancel any time with a text. We just ask for a week's notice.</p>
+          </li>
+          <li>
+            <h3>Pay after the visit</h3>
+            <p>We bill once a month by email. Pay by card, bank transfer or check.</p>
+          </li>
+        </ul>
+      </div>
+      <dl class="extras">
+        {
+          extras.map((e) => (
+            <div>
+              <dt>
+                {e.what}
+                <span>{e.note}</span>
+              </dt>
+              <dd>{e.price}</dd>
+            </div>
+          ))
+        }
+      </dl>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .small-h {
+    margin-bottom: 1rem;
+    font-size: clamp(1.6rem, 3vw, 2.1rem);
+  }
+
+  .prices {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  .prices th,
+  .prices td {
+    padding: 0.9rem 0.6rem;
+    border-top: 2px solid var(--line);
+    text-align: left;
+    vertical-align: top;
+  }
+
+  .prices thead th {
+    border-top: 0;
+    font-size: 0.9rem;
+    color: var(--muted);
+  }
+
+  .prices tbody th {
+    font-weight: 400;
+  }
+
+  .prices tbody th span {
+    display: block;
+    font-size: 0.9rem;
+    color: var(--muted);
+  }
+
+  .prices td {
+    font-family: var(--display);
+    font-weight: 800;
+    font-size: 1.6rem;
+    font-stretch: 88%;
+    color: var(--grass);
+    white-space: nowrap;
+  }
+
+  .prices__note {
+    margin: 1rem 0 0;
+    font-size: 0.95rem;
+    color: var(--muted);
+  }
+
+  .extras {
+    margin: 0;
+    border-radius: var(--radius);
+    background: var(--page);
+    padding: 0.5rem 1.4rem;
+  }
+
+  .extras div {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 1rem;
+    padding: 1rem 0;
+    border-top: 2px solid var(--line);
+  }
+
+  .extras div:first-child {
+    border-top: 0;
+  }
+
+  .extras dt {
+    font-weight: 700;
+  }
+
+  .extras dt span {
+    display: block;
+    font-weight: 400;
+    font-size: 0.92rem;
+    color: var(--muted);
+  }
+
+  .extras dd {
+    margin: 0;
+    font-weight: 800;
+    color: var(--grass);
+    white-space: nowrap;
+  }
+</style>

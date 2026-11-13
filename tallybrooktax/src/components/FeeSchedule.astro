@@ -1,0 +1,150 @@
+---
+// The fee list, laid out like a schedule on a tax form.
+interface Props {
+  limit?: number;
+}
+const { limit } = Astro.props;
+
+const fees = [
+  { what: 'Simple return', detail: 'W-2 income and the standard deduction', fee: '$150' },
+  { what: 'Family return', detail: 'Dependents, child tax credit, education credits', fee: '$225' },
+  { what: 'Itemized deductions', detail: 'Mortgage interest, property tax, donations', fee: '$275' },
+  { what: 'Self-employed or gig work', detail: 'Schedule C, mileage, home office', fee: 'from $350' },
+  { what: 'Rental property', detail: 'Each property, added to your return', fee: 'add $125' },
+  { what: 'Prior-year or amended return', detail: 'Catching up or fixing a past year', fee: 'from $175' },
+  { what: 'Ohio, city and school district returns', detail: 'Filed with every federal return', fee: 'Included' },
+  { what: 'IRS and state letters', detail: 'For returns we prepared', fee: 'Free' },
+];
+const rows = limit ? fees.slice(0, limit) : fees;
+---
+
+<table class="fees">
+  <caption>Fee schedule</caption>
+  <thead>
+    <tr>
+      <th scope="col"><span class="visually-hidden">Line</span></th>
+      <th scope="col">Return or service</th>
+      <th scope="col">Fee</th>
+    </tr>
+  </thead>
+  <tbody>
+    {
+      rows.map((r, i) => (
+        <tr>
+          <td class="fees__no">{i + 1}</td>
+          <th scope="row">
+            <span class="fees__what">{r.what}</span>
+            <span class="fees__detail">{r.detail}</span>
+          </th>
+          <td class="fees__fee">{r.fee}</td>
+        </tr>
+      ))
+    }
+  </tbody>
+</table>
+
+<style>
+  .fees {
+    width: 100%;
+    border-collapse: collapse;
+    background: var(--white);
+    border: 1.5px solid var(--ink);
+  }
+
+  .fees caption {
+    padding: 0.75rem 1rem;
+    background: var(--ink);
+    color: #fff;
+    font-family: var(--slab);
+    font-weight: 600;
+    font-size: 1.1rem;
+    text-align: left;
+    caption-side: top;
+  }
+
+  .fees thead th {
+    padding: 0.5rem 1rem;
+    border-bottom: 1px solid var(--ink);
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--muted);
+    text-align: left;
+  }
+
+  .fees thead th:last-child {
+    text-align: right;
+  }
+
+  .fees td,
+  .fees tbody th {
+    padding: 0.8rem 1rem;
+    border-top: 1px solid var(--rule);
+    vertical-align: middle;
+    text-align: left;
+  }
+
+  .fees tbody tr:first-child > * {
+    border-top: 0;
+  }
+
+  .fees__no {
+    width: 2.6rem;
+    padding-inline: 0 !important;
+    border-right: 1px solid var(--rule);
+    font-weight: 600;
+    text-align: center !important;
+    color: var(--muted);
+  }
+
+  .fees thead th:first-child {
+    border-right: 1px solid var(--rule);
+  }
+
+  .fees__what {
+    display: block;
+    font-weight: 600;
+  }
+
+  .fees__detail {
+    display: block;
+    font-weight: 400;
+    font-size: 0.92rem;
+    color: var(--muted);
+  }
+
+  .fees__fee {
+    width: 8.5rem;
+    background: var(--box);
+    border-left: 1px solid var(--rule);
+    font-family: var(--slab);
+    font-weight: 700;
+    font-size: 1.15rem;
+    text-align: right !important;
+    white-space: nowrap;
+  }
+
+  .visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+  }
+
+  @media (max-width: 30rem) {
+    .fees td,
+    .fees tbody th {
+      padding: 0.7rem 0.6rem;
+    }
+
+    .fees__no {
+      width: 2rem;
+    }
+
+    .fees__fee {
+      width: auto;
+      font-size: 1rem;
+    }
+  }
+</style>

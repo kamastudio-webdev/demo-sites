@@ -1,0 +1,273 @@
+/* Oakspur Tire & Wheel
+   Colors come from the shop itself: concrete floor, tire rubber,
+   the yellow paint crayon shops write prices with, and an oak green. */
+
+:root {
+  --concrete: #e3e6e3;
+  --paper: #f6f7f5;
+  --rubber: #1b1e1d;
+  --oak: #17442f;
+  --oak-deep: #0f3323;
+  --crayon: #f5c518;
+  --alloy: #c3c8c5;
+  --rule: #bfc4c0;
+  --muted: #4a524f;
+
+  --sans: 'Archivo Variable', 'Archivo', 'Helvetica Neue', Arial, sans-serif;
+  --marker: 'Permanent Marker', 'Comic Sans MS', cursive;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 106.25%;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--concrete);
+  color: var(--rubber);
+  font-family: var(--sans);
+  font-size: 1rem;
+  line-height: 1.55;
+}
+
+img,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+a {
+  color: inherit;
+  text-underline-offset: 0.18em;
+}
+
+h1,
+h2,
+h3 {
+  margin: 0;
+  font-family: var(--sans);
+  font-variation-settings: 'wdth' 125;
+  font-weight: 800;
+  line-height: 1.02;
+  letter-spacing: -0.02em;
+  text-wrap: balance;
+}
+
+h1 {
+  font-size: clamp(2.35rem, 5.6vw, 4.6rem);
+}
+
+h2 {
+  font-size: clamp(1.7rem, 3.3vw, 2.7rem);
+}
+
+h3 {
+  font-size: 1.2rem;
+  font-variation-settings: 'wdth' 112;
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: -0.005em;
+}
+
+p {
+  margin: 0 0 1em;
+  max-width: 62ch;
+}
+
+ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+:focus-visible {
+  outline: 3px solid currentColor;
+  outline-offset: 3px;
+}
+
+.skip {
+  position: absolute;
+  left: -999px;
+  top: 0;
+  padding: 0.6rem 1rem;
+  background: var(--rubber);
+  color: #fff;
+  z-index: 50;
+}
+
+.skip:focus {
+  left: 0;
+}
+
+/* Layout */
+
+.wrap {
+  width: min(100% - 2.5rem, 74rem);
+  margin-inline: auto;
+}
+
+.band {
+  padding-block: clamp(3.25rem, 7.5vw, 6rem);
+}
+
+.band--paper {
+  background: var(--paper);
+}
+
+.band--rubber {
+  background: var(--rubber);
+  color: var(--paper);
+}
+
+.band--oak {
+  background: var(--oak);
+  color: var(--paper);
+}
+
+.lede {
+  font-size: 1.2rem;
+  line-height: 1.5;
+  max-width: 54ch;
+}
+
+.band__head {
+  margin-bottom: clamp(1.75rem, 4vw, 3rem);
+}
+
+.band__head p {
+  margin-top: 1rem;
+  margin-bottom: 0;
+}
+
+.split {
+  display: grid;
+  gap: clamp(2rem, 5vw, 4.5rem);
+  align-items: start;
+}
+
+@media (min-width: 56rem) {
+  .split {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .split--wide-right {
+    grid-template-columns: 5fr 7fr;
+  }
+}
+
+/* Buttons */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.9rem 1.4rem;
+  border: 2px solid transparent;
+  border-radius: 6px;
+  font: inherit;
+  font-weight: 700;
+  line-height: 1.1;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.btn--call {
+  background: var(--oak);
+  color: #fff;
+}
+
+.btn--call:hover {
+  background: var(--oak-deep);
+}
+
+.btn--line {
+  border-color: currentColor;
+  background: transparent;
+  color: inherit;
+}
+
+.btn--line:hover {
+  background: var(--rubber);
+  border-color: var(--rubber);
+  color: #fff;
+}
+
+.btn--crayon {
+  background: var(--crayon);
+  color: var(--rubber);
+}
+
+.btn--crayon:hover {
+  background: #ffd83d;
+}
+
+.btn-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+/* Inner-page title block */
+
+.page-head {
+  padding-block: clamp(2.75rem, 6vw, 4.75rem) clamp(2.25rem, 5vw, 3.75rem);
+  border-bottom: 2px solid var(--rubber);
+}
+
+.page-head h1 {
+  font-size: clamp(2.1rem, 4.8vw, 3.8rem);
+  max-width: 18ch;
+}
+
+.page-head .lede {
+  margin-top: 1.25rem;
+  margin-bottom: 0;
+}
+
+/* A plain list with rules between the items */
+
+.ruled > li {
+  padding-block: 1.35rem;
+  border-top: 1px solid var(--rule);
+}
+
+.ruled > li:last-child {
+  border-bottom: 1px solid var(--rule);
+}
+
+.ruled h3 {
+  margin-bottom: 0.4rem;
+}
+
+.ruled p:last-child {
+  margin-bottom: 0;
+}
+
+.band--rubber .ruled > li,
+.band--oak .ruled > li {
+  border-color: rgb(255 255 255 / 0.22);
+}
+
+/* Words written in tire crayon */
+
+.crayon {
+  font-family: var(--marker);
+  font-weight: 400;
+  color: var(--crayon);
+  letter-spacing: 0.01em;
+}
+
+/* Leave room for the phone call bar */
+
+@media (max-width: 47.99rem) {
+  body {
+    padding-bottom: 4.25rem;
+  }
+}

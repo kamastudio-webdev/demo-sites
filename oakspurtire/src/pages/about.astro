@@ -1,0 +1,136 @@
+---
+import Base from '../layouts/Base.astro';
+import { site } from '../site';
+
+const areas = ['Midtown', 'Westport', 'Crossroads', 'Brookside', 'Waldo', 'Raytown', 'Independence', 'North Kansas City'];
+---
+
+<Base
+  title="About | Oakspur Tire & Wheel, Kansas City"
+  description="Oakspur Tire & Wheel is a family-owned tire shop in Kansas City, open since 2009."
+>
+  <section class="wrap page-head">
+    <h1>A family tire shop since 2009</h1>
+    <p class="lede">
+      Dale Hartwick opened Oakspur in a two-bay garage with a used tire machine and a hand-painted
+      sign. His daughter Renee runs the counter now. Dale still balances wheels most mornings.
+    </p>
+  </section>
+
+  <section class="band">
+    <div class="wrap split split--wide-right">
+      <h2>How we work</h2>
+      <div>
+        <p class="lede">
+          Dale spent eleven years at a chain store, where the job was to sell four tires to
+          everybody who walked in. He wanted a shop where you could say "you've got another year on
+          these" and mean it.
+        </p>
+        <p>
+          That's still the rule. We measure your tread where you can see the gauge. We write the
+          depth on used tires in yellow crayon so you know what you're buying. We post our prices
+          and we stick to them.
+        </p>
+        <p>
+          Today the shop has four bays and six people. Most of our customers were sent by a
+          neighbor, a coworker or their mechanic.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="band band--rubber">
+    <div class="wrap">
+      <ul class="numbers">
+        <li>
+          <span class="crayon">4</span>
+          service bays
+        </li>
+        <li>
+          <span class="crayon">6</span>
+          people on the crew
+        </li>
+        <li>
+          <span class="crayon">2009</span>
+          the year we opened
+        </li>
+        <li>
+          <span class="crayon">30 min</span>
+          for most flat repairs
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="band band--paper">
+    <div class="wrap split">
+      <div>
+        <h2>Who we serve</h2>
+        <p class="lede" style="margin-top:1rem">
+          The shop is at {site.address.street}, a few minutes from downtown. Customers drive in from
+          all over the metro.
+        </p>
+        <ul class="areas">
+          {areas.map((a) => <li>{a}</li>)}
+        </ul>
+      </div>
+      <div>
+        <h2>While you wait</h2>
+        <ul class="ruled" style="margin-top:1.5rem">
+          <li>
+            <h3>A clean waiting room</h3>
+            <p>Free coffee, Wi-Fi and a window into the bays so you can watch the work.</p>
+          </li>
+          <li>
+            <h3>Early drop-off</h3>
+            <p>Leave your keys in the drop box before work and we'll text you when it's done.</p>
+          </li>
+          <li>
+            <h3>Fleet and work trucks</h3>
+            <p>We keep a tab for local contractors and bill once a month.</p>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .numbers {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem 1.5rem;
+  }
+
+  .numbers li {
+    color: rgb(255 255 255 / 0.85);
+  }
+
+  .numbers span {
+    display: block;
+    margin-bottom: 0.35rem;
+    font-size: clamp(2.2rem, 5vw, 3.4rem);
+    line-height: 1;
+  }
+
+  @media (min-width: 56rem) {
+    .numbers {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+
+  .areas {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 1.25rem;
+  }
+
+  .areas li {
+    padding: 0.35rem 0.8rem;
+    border: 1.5px solid var(--rubber);
+    border-radius: 999px;
+    font-weight: 600;
+    font-size: 0.95rem;
+  }
+</style>

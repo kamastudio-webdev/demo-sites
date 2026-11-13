@@ -1,0 +1,68 @@
+---
+// A drawn map. The address is made up, so there's no real map to show.
+import { site } from '../site';
+---
+
+<figure class="map">
+  <svg viewBox="0 0 600 340" role="img" aria-label={`Sketch map showing the office at ${site.address.street}`}>
+    <rect width="600" height="340" fill="#eaeff7"></rect>
+    <g fill="none" stroke="#c3cee0" stroke-width="1">
+      <path d="M0 40 H600 M0 80 H600 M0 120 H600 M0 160 H600 M0 200 H600 M0 240 H600 M0 280 H600 M0 320 H600"
+      ></path>
+    </g>
+    <!-- roads -->
+    <path d="M-10 210 C 150 200, 300 150, 610 160" fill="none" stroke="#ffffff" stroke-width="30"></path>
+    <path d="M-10 210 C 150 200, 300 150, 610 160" fill="none" stroke="#8b97ae" stroke-width="1.5"
+      stroke-dasharray="10 9"></path>
+    <path d="M390 -10 L 420 350" fill="none" stroke="#ffffff" stroke-width="22"></path>
+    <text x="40" y="186" class="map__street">Wexlow Rd</text>
+    <text x="428" y="30" class="map__street" transform="rotate(85 428 30)">Fennimore Ave</text>
+    <!-- small plaza -->
+    <rect x="212" y="70" width="158" height="82" fill="#ffffff" stroke="#1c2740" stroke-width="1.5"></rect>
+    <rect x="212" y="70" width="40" height="82" fill="#274b8a"></rect>
+    <text x="223" y="120" class="map__suite">3</text>
+    <text x="262" y="104" class="map__shop">Tallybrook</text>
+    <text x="262" y="123" class="map__note">Suite 3</text>
+    <rect x="236" y="258" width="128" height="52" fill="none" stroke="#8b97ae" stroke-dasharray="4 4"></rect>
+    <text x="250" y="289" class="map__note">Free parking</text>
+  </svg>
+</figure>
+
+<style>
+  .map {
+    margin: 0;
+    border: 1.5px solid var(--ink);
+  }
+
+  .map svg {
+    width: 100%;
+    height: auto;
+  }
+
+  .map__street {
+    font-family: var(--sans);
+    font-size: 14px;
+    font-weight: 600;
+    fill: #4f5b73;
+  }
+
+  .map__suite {
+    font-family: var(--slab);
+    font-size: 26px;
+    font-weight: 700;
+    fill: #fff;
+  }
+
+  .map__shop {
+    font-family: var(--slab);
+    font-size: 17px;
+    font-weight: 700;
+    fill: #1c2740;
+  }
+
+  .map__note {
+    font-family: var(--sans);
+    font-size: 13px;
+    fill: #4f5b73;
+  }
+</style>

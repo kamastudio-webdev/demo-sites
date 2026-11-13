@@ -1,0 +1,182 @@
+---
+// A year on a Raleigh lawn: pick a month to see what the crews are doing.
+// It opens on the current month.
+import { months } from '../lawn';
+---
+
+<div class="year" data-year>
+  <div class="year__months" role="tablist" aria-label="Months">
+    {
+      months.map((m, i) => (
+        <button
+          type="button"
+          role="tab"
+          id={`month-tab-${i}`}
+          aria-controls={`month-panel-${i}`}
+          aria-selected={i === 0 ? 'true' : 'false'}
+          tabindex={i === 0 ? 0 : -1}
+        >
+          <span class="year__short" aria-hidden="true">{m.short}</span>
+          <span class="year__long">{m.name}</span>
+        </button>
+      ))
+    }
+  </div>
+
+  {
+    months.map((m, i) => (
+      <div
+        class="year__panel"
+        role="tabpanel"
+        id={`month-panel-${i}`}
+        aria-labelledby={`month-tab-${i}`}
+        hidden={i !== 0}
+      >
+        <h3>
+          {m.name}
+          <span class="year__now" hidden>This month</span>
+        </h3>
+        <ul>
+          {m.tasks.map((t) => (
+            <li>{t}</li>
+          ))}
+        </ul>
+      </div>
+    ))
+  }
+</div>
+
+<script>
+  document.querySelectorAll<HTMLElement>('[data-year]').forEach((root) => {
+    const tabs = [...root.querySelectorAll<HTMLButtonElement>('[role=tab]')];
+    const panels = [...root.querySelectorAll<HTMLElement>('[role=tabpanel]')];
+    const show = (n: number, focus = false) => {
+      tabs.forEach((t, i) => {
+        t.setAttribute('aria-selected', String(i === n));
+        t.tabIndex = i === n ? 0 : -1;
+      });
+      panels.forEach((p, i) => (p.hidden = i !== n));
+      if (focus) tabs[n].focus();
+    };
+    tabs.forEach((t, i) => {
+      t.addEventListener('click', () => show(i));
+      t.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowRight') show((i + 1) % tabs.length, true);
+        if (e.key === 'ArrowLeft') show((i + tabs.length - 1) % tabs.length, true);
+      });
+    });
+    const now = new Date().getMonth();
+    tabs[now].classList.add('is-now');
+    panels[now].querySelector<HTMLElement>('.year__now')!.hidden = false;
+    show(now);
+  });
+</script>
+
+<style>
+  .year {
+    display: grid;
+    gap: 1.25rem;
+  }
+
+  .year__months {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 0.4rem;
+  }
+
+  @media (min-width: 48rem) {
+    .year__months {
+      grid-template-columns: repeat(12, 1fr);
+    }
+  }
+
+  .year__months button {
+    position: relative;
+    padding: 0.75rem 0.25rem;
+    border: 0;
+    border-radius: 12px;
+    background: var(--white);
+    color: var(--ink);
+    font: inherit;
+    font-weight: 700;
+    cursor: pointer;
+  }
+
+  .year__months button:hover {
+    background: #eef6e6;
+  }
+
+  .year__months button[aria-selected='true'] {
+    background: var(--grass);
+    color: #fff;
+  }
+
+  .year__months button.is-now::after {
+    content: '';
+    position: absolute;
+    top: 0.35rem;
+    right: 0.35rem;
+    width: 0.45rem;
+    height: 0.45rem;
+    border-radius: 50%;
+    background: var(--clipping);
+    box-shadow: 0 0 0 2px var(--deep);
+  }
+
+  .year__long {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+  }
+
+  .year__panel {
+    padding: clamp(1.4rem, 3vw, 2rem);
+    border-radius: var(--radius);
+    background: var(--white);
+  }
+
+  .year__panel h3 {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+    font-size: clamp(1.6rem, 3vw, 2.2rem);
+    font-weight: 800;
+  }
+
+  .year__now {
+    padding: 0.25rem 0.7rem;
+    border-radius: 999px;
+    background: var(--clipping);
+    font-family: var(--sans);
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 0;
+  }
+
+  .year__panel li {
+    position: relative;
+    padding: 0.55rem 0 0.55rem 1.9rem;
+    border-top: 2px solid var(--line);
+    font-size: 1.05rem;
+  }
+
+  .year__panel li:first-child {
+    border-top: 0;
+  }
+
+  .year__panel li::before {
+    content: '';
+    position: absolute;
+    left: 0.2rem;
+    top: 0.95rem;
+    width: 0.95rem;
+    height: 0.6rem;
+    border-radius: 2px;
+    background: repeating-linear-gradient(90deg, var(--grass) 0 4px, var(--grass-2) 4px 8px);
+  }
+</style>

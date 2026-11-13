@@ -1,0 +1,139 @@
+---
+import Logo from './Logo.astro';
+import { site } from '../site';
+const year = new Date().getFullYear();
+---
+
+<footer class="site-foot">
+  <div class="wrap site-foot__grid">
+    <div>
+      <Logo tone="light" />
+      <p class="site-foot__blurb">
+        New and used tires, flat repair, balancing and alignments in {site.city}.
+      </p>
+    </div>
+
+    <div>
+      <h2>Find us</h2>
+      <p>
+        {site.address.street}<br />
+        {site.address.cityLine}<br />
+        <a href={site.phoneHref}>{site.phone}</a>
+      </p>
+    </div>
+
+    <div>
+      <h2>Hours</h2>
+      <dl class="site-foot__hours">
+        {
+          site.hours.map((h) => (
+            <>
+              <dt>{h.days}</dt>
+              <dd>{h.time}</dd>
+            </>
+          ))
+        }
+      </dl>
+    </div>
+
+    <nav aria-label="Footer">
+      <h2>Pages</h2>
+      <ul>
+        {
+          site.nav.map((item) => (
+            <li>
+              <a href={item.href}>{item.label}</a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+  </div>
+
+  <div class="wrap site-foot__legal">
+    <p>
+      © {year}{' '}
+      {site.name}. A fictional business, made up to show what a {site.demo.studio} website looks like.
+    </p>
+    <p>
+      Website design and development by{' '}
+      <a href={site.demo.studioUrl}>{site.demo.studio}</a>
+    </p>
+  </div>
+</footer>
+
+<style>
+  .site-foot {
+    background: var(--rubber);
+    color: rgb(255 255 255 / 0.86);
+    padding-block: clamp(2.75rem, 6vw, 4.5rem) 2rem;
+    font-size: 0.95rem;
+  }
+
+  .site-foot__grid {
+    display: grid;
+    gap: 2.25rem;
+  }
+
+  @media (min-width: 40rem) {
+    .site-foot__grid {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  @media (min-width: 62rem) {
+    .site-foot__grid {
+      grid-template-columns: 1.5fr 1fr 1.3fr 0.7fr;
+    }
+  }
+
+  .site-foot h2 {
+    margin-bottom: 0.7rem;
+    font-size: 1rem;
+    font-variation-settings: 'wdth' 112;
+    font-weight: 700;
+    letter-spacing: 0;
+    color: #fff;
+  }
+
+  .site-foot p {
+    margin: 0;
+  }
+
+  .site-foot__blurb {
+    margin-top: 1.1rem !important;
+    max-width: 30ch;
+  }
+
+  .site-foot__hours {
+    display: grid;
+    grid-template-columns: auto auto;
+    justify-content: start;
+    gap: 0.15rem 1.25rem;
+    margin: 0;
+  }
+
+  .site-foot__hours dd {
+    margin: 0;
+  }
+
+  .site-foot li + li {
+    margin-top: 0.3rem;
+  }
+
+  .site-foot__legal {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 0.5rem 2rem;
+    margin-top: 2.75rem;
+    padding-top: 1.25rem;
+    border-top: 1px solid rgb(255 255 255 / 0.2);
+    font-size: 0.86rem;
+    color: rgb(255 255 255 / 0.7);
+  }
+
+  .site-foot__legal p {
+    max-width: none;
+  }
+</style>

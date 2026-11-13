@@ -1,0 +1,138 @@
+---
+import Logo from './Logo.astro';
+import { site } from '../site';
+
+const here = Astro.url.pathname.replace(/\/$/, '') || '/';
+---
+
+<header class="site-head">
+  <div class="wrap site-head__row">
+    <a class="site-head__logo" href="/" aria-label={`${site.name}, home`}>
+      <Logo />
+    </a>
+
+    <button class="menu-btn" type="button" aria-expanded="false" aria-controls="site-nav">
+      Menu
+    </button>
+
+    <nav id="site-nav" class="site-nav" aria-label="Main">
+      <ul>
+        {
+          site.nav.map((item) => (
+            <li>
+              <a href={item.href} aria-current={here === item.href ? 'page' : undefined}>
+                {item.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+
+    <a class="btn btn--call site-head__call" href={site.phoneHref}>Call {site.phone}</a>
+  </div>
+</header>
+
+<script>
+  const btn = document.querySelector<HTMLButtonElement>('.menu-btn');
+  const nav = document.getElementById('site-nav');
+  btn?.addEventListener('click', () => {
+    const open = btn.getAttribute('aria-expanded') === 'true';
+    btn.setAttribute('aria-expanded', String(!open));
+    nav?.classList.toggle('is-open', !open);
+  });
+</script>
+
+<style>
+  .site-head {
+    background: var(--concrete);
+    border-bottom: 1px solid var(--rule);
+  }
+
+  .site-head__row {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    padding-block: 0.9rem;
+  }
+
+  .site-head__logo {
+    text-decoration: none;
+    margin-right: auto;
+  }
+
+  .site-nav ul {
+    display: flex;
+    gap: 1.6rem;
+  }
+
+  .site-nav a {
+    display: block;
+    padding-block: 0.4rem;
+    font-weight: 600;
+    text-decoration: none;
+    border-bottom: 3px solid transparent;
+  }
+
+  .site-nav a:hover {
+    border-bottom-color: var(--rule);
+  }
+
+  .site-nav a[aria-current='page'] {
+    border-bottom-color: var(--oak);
+  }
+
+  .menu-btn {
+    display: none;
+    padding: 0.6rem 1rem;
+    border: 2px solid var(--rubber);
+    border-radius: 6px;
+    background: transparent;
+    color: var(--rubber);
+    font: inherit;
+    font-weight: 700;
+    cursor: pointer;
+  }
+
+  @media (max-width: 61.99rem) {
+    .site-head__call {
+      display: none;
+    }
+  }
+
+  @media (max-width: 47.99rem) {
+    .site-head__row {
+      flex-wrap: wrap;
+      gap: 0.75rem;
+    }
+
+    .menu-btn {
+      display: block;
+    }
+
+    .site-nav {
+      display: none;
+      flex-basis: 100%;
+    }
+
+    .site-nav.is-open {
+      display: block;
+    }
+
+    .site-nav ul {
+      flex-direction: column;
+      gap: 0;
+      border-top: 1px solid var(--rule);
+    }
+
+    .site-nav a {
+      padding-block: 0.85rem;
+      border-bottom: 1px solid var(--rule);
+    }
+
+    .site-nav a[aria-current='page'] {
+      border-bottom-color: var(--rule);
+      color: var(--oak);
+    }
+  }
+</style>

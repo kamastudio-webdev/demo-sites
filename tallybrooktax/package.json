@@ -1,0 +1,17 @@
+{
+  "name": "tallybrooktax",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Demo website by KamaStudio: Tallybrook Tax Service (a fictional business).",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview"
+  },
+  "dependencies": {
+    "@fontsource/ibm-plex-sans": "^5.3.0",
+    "@fontsource/zilla-slab": "^5.3.0",
+    "astro": "^7.4.12"
+  }
+}

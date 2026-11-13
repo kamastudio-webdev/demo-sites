@@ -1,0 +1,55 @@
+---
+// The price board that hangs behind the counter.
+const prices = [
+  { name: 'Flat repair, plug and patch', price: '$25' },
+  { name: 'Mount and balance, per tire', price: '$22' },
+  { name: 'Tire rotation', price: '$20' },
+  { name: 'Four-wheel alignment', price: '$89' },
+  { name: 'Tire pressure sensor, installed', price: '$55' },
+  { name: 'Winter changeover, set of four on wheels', price: '$40' },
+  { name: 'Used tires, installed', price: 'from $45' },
+];
+---
+
+<dl class="board">
+  {
+    prices.map((row) => (
+      <div class="board__row">
+        <dt>{row.name}</dt>
+        <dd class="crayon">{row.price}</dd>
+      </div>
+    ))
+  }
+</dl>
+
+<style>
+  .board {
+    margin: 0;
+  }
+
+  .board__row {
+    display: flex;
+    align-items: baseline;
+    gap: 0.75rem;
+    padding-block: 0.95rem;
+    border-bottom: 1px solid rgb(255 255 255 / 0.2);
+  }
+
+  .board__row:first-child {
+    border-top: 1px solid rgb(255 255 255 / 0.2);
+  }
+
+  .board dt {
+    font-variation-settings: 'wdth' 112;
+    font-weight: 600;
+    font-size: 1.1rem;
+  }
+
+  .board dd {
+    margin: 0 0 0 auto;
+    font-size: 1.5rem;
+    line-height: 1;
+    white-space: nowrap;
+    transform: rotate(-2deg);
+  }
+</style>

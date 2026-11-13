@@ -1,0 +1,117 @@
+---
+// A sample work order, to show what "out the door" covers.
+const lines = [
+  { item: '4 all-season tires, 225/65R17', amount: '$516.00' },
+  { item: 'Mounting and balancing', amount: 'Included' },
+  { item: 'New valve stems', amount: 'Included' },
+  { item: 'Old tire disposal', amount: 'Included' },
+  { item: 'Free rotations for the life of the tires', amount: 'Included' },
+];
+---
+
+<figure class="ticket">
+  <figcaption>
+    <span class="ticket__title">Work order</span>
+    <span class="ticket__no">Sample</span>
+  </figcaption>
+  <table>
+    <tbody>
+      {
+        lines.map((l) => (
+          <tr>
+            <th scope="row">{l.item}</th>
+            <td>{l.amount}</td>
+          </tr>
+        ))
+      }
+    </tbody>
+    <tfoot>
+      <tr>
+        <th scope="row">Out the door, before sales tax</th>
+        <td>$516.00</td>
+      </tr>
+    </tfoot>
+  </table>
+  <p class="ticket__scrawl crayon" aria-hidden="true">no surprises!</p>
+</figure>
+
+<style>
+  .ticket {
+    position: relative;
+    margin: 0;
+    padding: 1.5rem 1.5rem 1.75rem;
+    background: #fff;
+    border: 2px solid var(--rubber);
+    box-shadow: 8px 8px 0 var(--rubber);
+    transform: rotate(-1.2deg);
+  }
+
+  .ticket figcaption {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding-bottom: 0.8rem;
+    border-bottom: 2px solid var(--rubber);
+  }
+
+  .ticket__title {
+    font-variation-settings: 'wdth' 125;
+    font-weight: 800;
+    font-size: 1.3rem;
+    letter-spacing: -0.01em;
+  }
+
+  .ticket__no {
+    font-size: 0.9rem;
+    color: var(--muted);
+  }
+
+  .ticket table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.98rem;
+  }
+
+  .ticket th,
+  .ticket td {
+    padding: 0.7rem 0;
+    border-bottom: 1px dashed var(--rule);
+    font-weight: 400;
+    text-align: left;
+    vertical-align: top;
+  }
+
+  .ticket td {
+    padding-left: 1rem;
+    text-align: right;
+    white-space: nowrap;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .ticket tfoot th,
+  .ticket tfoot td {
+    padding-top: 0.9rem;
+    border-bottom: 0;
+    font-weight: 800;
+    font-size: 1.08rem;
+  }
+
+  .ticket__scrawl {
+    position: absolute;
+    right: 1.1rem;
+    bottom: -1.15rem;
+    margin: 0;
+    padding: 0.1rem 0.6rem;
+    background: var(--rubber);
+    font-size: 1.35rem;
+    transform: rotate(-4deg);
+  }
+
+  @media (max-width: 30rem) {
+    .ticket {
+      margin-bottom: 1.25rem;
+      padding: 1.1rem 1rem 1.6rem;
+      box-shadow: 5px 5px 0 var(--rubber);
+    }
+  }
+</style>

@@ -1,0 +1,116 @@
+---
+import Base from '../layouts/Base.astro';
+import DeadlineForm from '../components/DeadlineForm.astro';
+import FeeSchedule from '../components/FeeSchedule.astro';
+import Steps from '../components/Steps.astro';
+import Checklist from '../components/Checklist.astro';
+import Reviews from '../components/Reviews.astro';
+import { bringShort } from '../checklist';
+import { site } from '../site';
+---
+
+<Base
+  title="Tallybrook Tax Service | Tax Preparation in Columbus, OH"
+  description="Personal and small business tax returns in Columbus, Ohio. Flat fees quoted before we start, Ohio and city returns included, and the same preparer every year."
+>
+  <section class="hero">
+    <div class="wrap hero__row">
+      <div>
+        <h1>Bring the shoebox. We'll do the rest.</h1>
+        <p class="lede">
+          Tallybrook prepares personal and small business tax returns in Columbus. You get a flat
+          fee before we start, your Ohio and city returns at no extra cost, and the same preparer
+          every year.
+        </p>
+        <div class="btn-row">
+          <a class="btn btn--primary" href={site.cta.href}>{site.cta.label}</a>
+          <a class="btn btn--line" href="/what-to-bring">See what to bring</a>
+        </div>
+        <p class="hero__note">
+          Or call{' '}<a href={site.phoneHref}>{site.phone}</a>. Evening and Saturday appointments
+          during tax season.
+        </p>
+      </div>
+      <DeadlineForm />
+    </div>
+  </section>
+
+  <section class="band band--white">
+    <div class="wrap split split--narrow-left">
+      <div>
+        <h2>Flat fees, set before we start</h2>
+        <p class="lede" style="margin-top:1rem">
+          We look at your papers, tell you the fee, and that's what you pay. No charge per form, and
+          no fee to sit down and talk it over first.
+        </p>
+        <a class="btn btn--line" href="/services">See all services and fees</a>
+      </div>
+      <FeeSchedule limit={5} />
+    </div>
+  </section>
+
+  <section class="band">
+    <div class="wrap">
+      <h2 class="section-title">How it works</h2>
+      <Steps />
+    </div>
+  </section>
+
+  <section class="band band--white">
+    <div class="wrap split">
+      <div>
+        <h2>What to bring</h2>
+        <p class="lede" style="margin-top:1rem">
+          Tick things off as you find them. Your ticks stay on this device, so you can come back to
+          the list.
+        </p>
+        <p>
+          Not sure you have everything? Bring what you've got. We'll make a list of what's missing
+          before we start.
+        </p>
+        <a class="btn btn--line" href="/what-to-bring">See the full list</a>
+      </div>
+      <Checklist groups={bringShort} storageKey="short" />
+    </div>
+  </section>
+
+  <section class="band">
+    <div class="wrap">
+      <h2 class="section-title">What clients say</h2>
+      <Reviews />
+    </div>
+  </section>
+</Base>
+
+<style>
+  .hero__row {
+    display: grid;
+    gap: 3rem;
+    align-items: center;
+    padding-block: clamp(2.75rem, 6vw, 5rem) clamp(3.5rem, 7vw, 5.5rem);
+  }
+
+  @media (min-width: 60rem) {
+    .hero__row {
+      grid-template-columns: 6fr 5fr;
+      gap: 4rem;
+    }
+  }
+
+  .hero h1 {
+    max-width: 13ch;
+  }
+
+  .hero .lede {
+    margin: 1.4rem 0 1.75rem;
+  }
+
+  .hero__note {
+    margin: 1.4rem 0 0;
+    color: var(--muted);
+  }
+
+  .section-title {
+    margin-bottom: clamp(1.75rem, 4vw, 2.75rem);
+  }
+</style>

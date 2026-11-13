@@ -1,0 +1,96 @@
+---
+// Demo form: it never sends anything. It only shows a message so a
+// visitor can see how the form behaves.
+---
+
+<form class="form" data-demo-form novalidate>
+  <div class="form__field">
+    <label for="cf-name">Your name</label>
+    <input id="cf-name" name="name" type="text" autocomplete="name" required />
+  </div>
+
+  <div class="form__field">
+    <label for="cf-phone">Phone number</label>
+    <input id="cf-phone" name="phone" type="tel" autocomplete="tel" required />
+  </div>
+
+  <div class="form__field">
+    <label for="cf-size">Tire size or vehicle</label>
+    <input id="cf-size" name="size" type="text" placeholder="225/65R17, or 2018 Honda CR-V" />
+  </div>
+
+  <div class="form__field">
+    <label for="cf-msg">What do you need?</label>
+    <textarea id="cf-msg" name="message" rows="5"></textarea>
+  </div>
+
+  <button class="btn btn--call" type="submit">Send message</button>
+
+  <p class="form__status" role="status" tabindex="-1" hidden></p>
+</form>
+
+<script>
+  document.querySelectorAll<HTMLFormElement>('[data-demo-form]').forEach((form) => {
+    const status = form.querySelector<HTMLElement>('.form__status')!;
+    form.addEventListener('submit', (event) => {
+      event.preventDefault();
+      const name = (form.elements.namedItem('name') as HTMLInputElement).value.trim();
+      const phone = (form.elements.namedItem('phone') as HTMLInputElement).value.trim();
+
+      status.hidden = false;
+      if (!name || !phone) {
+        status.dataset.kind = 'error';
+        status.textContent = 'Add your name and phone number so the shop can call you back.';
+      } else {
+        status.dataset.kind = 'ok';
+        status.textContent = `Thanks, ${name.split(' ')[0]}. This is a demo, so nothing was sent. On a real site, this message lands in the owner's inbox.`;
+      }
+      status.focus();
+    });
+  });
+</script>
+
+<style>
+  .form {
+    display: grid;
+    gap: 1.1rem;
+    justify-items: start;
+  }
+
+  .form__field {
+    display: grid;
+    gap: 0.35rem;
+    width: 100%;
+  }
+
+  .form label {
+    font-weight: 700;
+  }
+
+  .form input,
+  .form textarea {
+    width: 100%;
+    padding: 0.75rem 0.85rem;
+    border: 2px solid var(--rubber);
+    border-radius: 6px;
+    background: #fff;
+    color: var(--rubber);
+    font: inherit;
+  }
+
+  .form ::placeholder {
+    color: #6b7370;
+  }
+
+  .form__status {
+    margin: 0;
+    padding: 0.85rem 1rem;
+    border-left: 6px solid var(--oak);
+    background: #fff;
+    font-weight: 600;
+  }
+
+  .form__status[data-kind='error'] {
+    border-left-color: #a3271b;
+  }
+</style>
