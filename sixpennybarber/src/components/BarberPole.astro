@@ -1,86 +1,121 @@
 ---
-// A barber pole. The stripes turn slowly, like the one outside the door.
+// A classic barber pole: domed chrome caps top and bottom, a glass tube,
+// and red, white and blue stripes that turn slowly.
+
+const X0 = 40; // left edge of the glass
+const X1 = 160; // right edge of the glass
+const TOP = 142; // top of the glass
+const BOT = 478; // bottom of the glass
+const H = 620; // full height of the drawing
+const P = 160; // one repeat: red, white, blue, white
+const DROP = 88; // how far a stripe falls from left to right
+const BAND = 50; // thickness of a colored stripe
+
+const bands: { y: number; color: string }[] = [];
+for (let y = TOP - 2 * P - DROP; y < BOT + 2 * P; y += P) {
+  bands.push({ y, color: '#c8202e' });
+  bands.push({ y: y + P / 2, color: '#2347a6' });
+}
+const band = (y: number) =>
+  `${X0 - 4},${y} ${X1 + 4},${y + DROP} ${X1 + 4},${y + DROP + BAND} ${X0 - 4},${y + BAND}`;
 ---
 
 <div class="pole" aria-hidden="true">
-  <span class="pole__ball"></span>
-  <span class="pole__cap"></span>
-  <span class="pole__glass"><span class="pole__stripes"></span></span>
-  <span class="pole__cap pole__cap--base"></span>
-  <span class="pole__mount"></span>
+  <svg viewBox={`0 0 200 ${H}`}>
+    <defs>
+      <!-- Polished chrome, lit from the left -->
+      <linearGradient id="bp-chrome" x1="0" x2="1" y1="0" y2="0">
+        <stop offset="0" stop-color="#5d6367"></stop>
+        <stop offset="0.14" stop-color="#a9afb2"></stop>
+        <stop offset="0.3" stop-color="#f7f8f8"></stop>
+        <stop offset="0.42" stop-color="#d9dddf"></stop>
+        <stop offset="0.62" stop-color="#9aa0a3"></stop>
+        <stop offset="0.82" stop-color="#c3c8ca"></stop>
+        <stop offset="1" stop-color="#5a6064"></stop>
+      </linearGradient>
+      <!-- Rounds each ring off top to bottom -->
+      <linearGradient id="bp-round" x1="0" x2="0" y1="0" y2="1">
+        <stop offset="0" stop-color="#fff" stop-opacity="0.45"></stop>
+        <stop offset="0.35" stop-color="#fff" stop-opacity="0"></stop>
+        <stop offset="0.75" stop-color="#000" stop-opacity="0"></stop>
+        <stop offset="1" stop-color="#000" stop-opacity="0.32"></stop>
+      </linearGradient>
+      <!-- Curved glass: dark edges and one bright streak -->
+      <linearGradient id="bp-glass" x1="0" x2="1" y1="0" y2="0">
+        <stop offset="0" stop-color="#000" stop-opacity="0.32"></stop>
+        <stop offset="0.12" stop-color="#000" stop-opacity="0.04"></stop>
+        <stop offset="0.24" stop-color="#fff" stop-opacity="0.15"></stop>
+        <stop offset="0.31" stop-color="#fff" stop-opacity="0.6"></stop>
+        <stop offset="0.38" stop-color="#fff" stop-opacity="0.08"></stop>
+        <stop offset="0.7" stop-color="#000" stop-opacity="0"></stop>
+        <stop offset="0.86" stop-color="#fff" stop-opacity="0.18"></stop>
+        <stop offset="1" stop-color="#000" stop-opacity="0.3"></stop>
+      </linearGradient>
+      <clipPath id="bp-tube">
+        <rect x={X0} y={TOP} width={X1 - X0} height={BOT - TOP}></rect>
+      </clipPath>
+
+      <g id="bp-cap">
+        <!-- dome -->
+        <path d="M46 74 C46 38 70 24 100 24 C130 24 154 38 154 74 Z" fill="url(#bp-chrome)"></path>
+        <path d="M46 74 C46 38 70 24 100 24 C130 24 154 38 154 74 Z" fill="url(#bp-round)"></path>
+        <ellipse cx="80" cy="42" rx="14" ry="6" fill="#fff" opacity="0.55"></ellipse>
+        <!-- wide flared ring -->
+        <rect x="22" y="70" width="156" height="28" rx="14" fill="url(#bp-chrome)"></rect>
+        <rect x="22" y="70" width="156" height="28" rx="14" fill="url(#bp-round)"></rect>
+        <!-- narrow groove -->
+        <rect x="34" y="97" width="132" height="10" rx="4" fill="url(#bp-chrome)"></rect>
+        <rect x="34" y="97" width="132" height="10" rx="4" fill="#000" opacity="0.28"></rect>
+        <!-- second ring -->
+        <rect x="26" y="106" width="148" height="24" rx="12" fill="url(#bp-chrome)"></rect>
+        <rect x="26" y="106" width="148" height="24" rx="12" fill="url(#bp-round)"></rect>
+        <!-- collar that holds the glass -->
+        <rect x="35" y="129" width="130" height="15" rx="3" fill="url(#bp-chrome)"></rect>
+        <rect x="35" y="129" width="130" height="15" rx="3" fill="url(#bp-round)"></rect>
+      </g>
+    </defs>
+
+    <!-- glass tube -->
+    <rect x={X0} y={TOP} width={X1 - X0} height={BOT - TOP} fill="#fbfbfb"></rect>
+    <g clip-path="url(#bp-tube)">
+      <g class="pole__stripes">
+        {bands.map((b) => <polygon points={band(b.y)} fill={b.color} />)}
+      </g>
+    </g>
+    <rect x={X0} y={TOP} width={X1 - X0} height={BOT - TOP} fill="url(#bp-glass)"></rect>
+    <line x1={X0 + 0.75} y1={TOP} x2={X0 + 0.75} y2={BOT} stroke="#8d9599" stroke-width="1.5"></line>
+    <line x1={X1 - 0.75} y1={TOP} x2={X1 - 0.75} y2={BOT} stroke="#8d9599" stroke-width="1.5"></line>
+
+    <!-- caps, the bottom one a mirror of the top -->
+    <use href="#bp-cap"></use>
+    <use href="#bp-cap" transform={`translate(0 ${H}) scale(1 -1)`}></use>
+  </svg>
 </div>
 
 <style>
   .pole {
-    display: grid;
-    justify-items: center;
-    width: 7.5rem;
+    width: clamp(9.5rem, 15vw, 12rem);
+    filter: drop-shadow(0 18px 22px rgb(35 32 31 / 0.22));
   }
 
-  .pole__ball {
-    width: 2.4rem;
-    height: 2.4rem;
-    margin-bottom: -0.4rem;
-    border-radius: 50%;
-    background: radial-gradient(circle at 35% 30%, #fff 0 12%, #d9dddf 28%, #8d9497 75%, #6d7477);
+  .pole svg {
+    width: 100%;
+    height: auto;
+    overflow: visible;
   }
 
-  .pole__cap {
-    width: 6.8rem;
-    height: 2.1rem;
-    border-radius: 0.6rem 0.6rem 0.2rem 0.2rem;
-    background: linear-gradient(90deg, #7b8285, #e9eced 30%, #fdfdfd 42%, #aeb4b7 70%, #6d7477);
-    box-shadow: inset 0 -3px 0 rgb(0 0 0 / 0.18);
-  }
-
-  .pole__cap--base {
-    border-radius: 0.2rem 0.2rem 0.6rem 0.6rem;
-    box-shadow: inset 0 3px 0 rgb(0 0 0 / 0.18);
-  }
-
-  .pole__glass {
-    position: relative;
-    width: 5.6rem;
-    height: clamp(16rem, 34vw, 22rem);
-    overflow: hidden;
-    border-inline: 2px solid #9aa1a4;
-  }
-
-  /* Highlight on the glass */
-  .pole__glass::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(
-      90deg,
-      rgb(0 0 0 / 0.28),
-      rgb(255 255 255 / 0) 22%,
-      rgb(255 255 255 / 0.55) 34%,
-      rgb(255 255 255 / 0) 46%,
-      rgb(0 0 0 / 0.22)
-    );
-  }
-
+  /* The stripes climb one full repeat, then start again, so it looks like
+     the pole is turning. */
   .pole__stripes {
-    position: absolute;
-    inset: -120px 0 0 0;
-    background: repeating-linear-gradient(
-      -35deg,
-      var(--pole-red) 0 22px,
-      #fff 22px 40px,
-      var(--pole-blue) 40px 62px,
-      #fff 62px 80px
-    );
-    background-size: 100% 139.5px;
-    animation: turn 3.5s linear infinite;
+    animation: pole-turn 4.5s linear infinite;
   }
 
-  @keyframes turn {
+  @keyframes pole-turn {
     from {
       transform: translateY(0);
     }
     to {
-      transform: translateY(139.5px);
+      transform: translateY(-160px);
     }
   }
 
@@ -88,11 +123,5 @@
     .pole__stripes {
       animation: none;
     }
-  }
-
-  .pole__mount {
-    width: 1.2rem;
-    height: 1.6rem;
-    background: linear-gradient(90deg, #6d7477, #d9dddf, #6d7477);
   }
 </style>
